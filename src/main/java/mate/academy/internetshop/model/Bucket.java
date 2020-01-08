@@ -14,7 +14,6 @@ public class Bucket {
     }
 
     public Bucket(User user) {
-        id = IdGenerator.generateNewBucketId();
         items = new ArrayList<>();
         userId = user.getId();
     }

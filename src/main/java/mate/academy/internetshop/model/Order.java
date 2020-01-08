@@ -11,7 +11,6 @@ public class Order {
     private List<Item> items;
 
     public Order(User user) {
-        id = IdGenerator.generateNewOrderId();
         items = new ArrayList<>();
         userId = user.getId();
     }
