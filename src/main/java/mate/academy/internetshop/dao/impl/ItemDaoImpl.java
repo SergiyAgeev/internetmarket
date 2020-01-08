@@ -24,7 +24,7 @@ public class ItemDaoImpl implements ItemDao {
     public Optional<Item> get(Long id) {
         return Storage.items
                 .stream()
-                .filter(i -> i.getId() == id)
+                .filter(i -> i.getId().equals(id))
                 .findFirst();
     }
 
@@ -32,7 +32,7 @@ public class ItemDaoImpl implements ItemDao {
     public Item update(Item item) {
         Item temp = Storage.items
                 .stream()
-                .filter(i -> i.getId() == item.getId())
+                .filter(i -> i.getId().equals(item.getId()))
                 .findFirst().orElseThrow(() ->
                         new NoSuchElementException("there is no item with id "
                                 + item.getId()));
@@ -44,7 +44,7 @@ public class ItemDaoImpl implements ItemDao {
     public boolean deleteById(Long id) {
         Item temp = Storage.items
                 .stream()
-                .filter(i -> i.getId() == id)
+                .filter(i -> i.getId().equals(id))
                 .findFirst().orElseThrow(() ->
                         new NoSuchElementException("there is no item with id " + id));
         return delete(temp);

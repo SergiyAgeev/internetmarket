@@ -20,7 +20,7 @@ public class BucketDaoImpl implements BucketDao {
     public Optional<Bucket> get(Long id) {
         return Storage.buckets
                 .stream()
-                .filter(b -> b.getId() == id)
+                .filter(b -> b.getId().equals(id))
                 .findFirst();
     }
 
@@ -28,7 +28,7 @@ public class BucketDaoImpl implements BucketDao {
     public Bucket update(Bucket bucket) {
         Bucket old = Storage.buckets
                 .stream()
-                .filter(b -> b.getId() == bucket.getId())
+                .filter(b -> b.getId().equals(bucket.getId()))
                 .findFirst()
                 .orElseThrow(() ->
                         new NoSuchElementException("there is no bucket with id "

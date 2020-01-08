@@ -94,21 +94,10 @@ public class Main {
         System.out.println(Storage.buckets);
 
         Order order1 = orderService.completeOrder(bucketService.getAllItems(bucket1), user1);
-
         Order order3 = orderService.completeOrder(bucketService.getAllItems(bucket3), user3);
 
         orderService.delete(order3);
         orderService.delete(order1);
         System.out.println(Storage.orders);
-        orderService.deleteById(user1.getId());
-        System.out.println(Storage.orders);
-
-        bucketService.clear(bucket3);
-        System.out.println(orderService.getUserOrders(user2));
-        System.out.println(orderService.getUserOrders(user3));
-
-        System.out.println(Storage.orders);
-
     }
-
 }

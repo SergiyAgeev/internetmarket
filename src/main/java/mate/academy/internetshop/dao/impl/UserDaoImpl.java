@@ -22,7 +22,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> get(Long id) {
         return Storage.users
                 .stream()
-                .filter(u -> u.getId() == (id))
+                .filter(u -> u.getId().equals(id))
                 .findFirst();
     }
 
@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
     public User update(User user) {
         User temp = Storage.users
                 .stream()
-                .filter(u -> u.getId() == user.getId())
+                .filter(u -> u.getId().equals(user.getId()))
                 .findFirst()
                 .orElseThrow(() ->
                         new NoSuchElementException("there is no user with id "
@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
     public boolean deleteById(Long id) {
         User old = Storage.users
                 .stream()
-                .filter(u -> u.getId() == id)
+                .filter(u -> u.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() ->
                         new NoSuchElementException("there is no user with id " + id));

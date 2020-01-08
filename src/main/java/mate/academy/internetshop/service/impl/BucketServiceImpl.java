@@ -54,7 +54,6 @@ public class BucketServiceImpl implements BucketService {
     @Override
     public void clear(Bucket bucket) {
         bucket.getItems().clear();
-
     }
 
     @Override
