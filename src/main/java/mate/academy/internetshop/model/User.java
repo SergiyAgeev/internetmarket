@@ -1,13 +1,53 @@
 package mate.academy.internetshop.model;
 
+import mate.academy.internetshop.lib.IdGenerator;
+
 public class User {
     private Long id;
     private String name;
+    private String secondName;
+    private String login;
+    private String password;
     private int age;
 
-    public User(String name, int age) {
+    public User() {
+        this.id = IdGenerator.generateNewUserId();
+    }
+
+    public User(String name, String secondName, String login, String password, int age) {
+        this();
         this.name = name;
+        this.secondName = secondName;
+        this.login = login;
+        this.password = password;
         this.age = age;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public User setSecondName(String secondName) {
+        this.secondName = secondName;
+        return this;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public User setLogin(String login) {
+        this.login = login;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     public Long getId() {
@@ -39,6 +79,9 @@ public class User {
     public String toString() {
         return "User{" + "id=" + id
                 + ", name='" + name + '\''
+                + ", secondName='" + secondName + '\''
+                + ", login='" + login + '\''
+                + ", password='" + password + '\''
                 + ", age=" + age + '}';
     }
 }
