@@ -14,7 +14,7 @@ import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.OrderService;
 
 public class CompleteOrderController extends HttpServlet {
-    private static final long USER_ID = 1L;
+    private static final Long USER_ID = 1L;
     @Inject
     private static BucketService bucketService;
     @Inject

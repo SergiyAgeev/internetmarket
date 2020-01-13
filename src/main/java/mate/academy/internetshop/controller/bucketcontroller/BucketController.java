@@ -16,16 +16,12 @@ public class BucketController extends HttpServlet {
     @Inject
     private static BucketService bucketService;
 
-    private static final long USER_ID = 1L;
+    private static final Long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Bucket bucket = bucketService.getAllBuckets()
-                .stream()
-                .filter(b -> b.getUserId().equals(USER_ID))
-                .findFirst()
-                .orElse(bucketService.create(new Bucket(USER_ID)));
+        Bucket bucket = bucketService.getByUserId(USER_ID);
         List<Item> allItems = bucketService.getAllItems(bucket);
         req.setAttribute("allItemsInBucket", allItems);
         req.setAttribute("bucket", bucket);

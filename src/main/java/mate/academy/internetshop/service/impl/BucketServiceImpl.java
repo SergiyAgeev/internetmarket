@@ -21,7 +21,11 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public Bucket get(Long id) {
-        return bucketDao.get(id).get();
+        return bucketDao.get(id)
+                .stream()
+                .filter(b -> b.getUserId().equals(id))
+                .findFirst()
+                .orElse(bucketDao.create(new Bucket(id)));
     }
 
     @Override
@@ -51,12 +55,15 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public Bucket getByUserId(Long userId) {
-        return bucketDao.getByUserId(userId);
+        return bucketDao.getAllBuckets().stream()
+                .filter(b -> b.getUserId().equals(userId))
+                .findFirst()
+                .orElse(create(new Bucket(userId)));
     }
 
     @Override
     public void addItem(Bucket bucket, Item item) {
-        bucketDao.get(bucket.getId());
+        get(bucket.getId());
         bucket.getItems().add(item);
     }
 

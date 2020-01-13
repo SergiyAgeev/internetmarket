@@ -14,7 +14,7 @@ import mate.academy.internetshop.service.ItemService;
 import mate.academy.internetshop.service.UserService;
 
 public class AddItemToBucketController extends HttpServlet {
-    private static final long USER_ID = 1L;
+    private static final Long USER_ID = 1L;
     @Inject
     private static BucketService bucketService;
     @Inject
@@ -28,11 +28,7 @@ public class AddItemToBucketController extends HttpServlet {
 
         String itemId = req.getParameter("item_id");
         Item item = itemService.get(Long.valueOf(itemId));
-        Bucket bucket = bucketService.getAllBuckets()
-                .stream()
-                .filter(b -> b.getUserId().equals(USER_ID))
-                .findFirst()
-                .orElse(bucketService.create(new Bucket(USER_ID)));
+        Bucket bucket = bucketService.getByUserId(USER_ID);
         bucketService.addItem(bucket, item);
         resp.sendRedirect("/allItems");
     }

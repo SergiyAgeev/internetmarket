@@ -7,14 +7,12 @@ import java.util.Optional;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.db.Storage;
 import mate.academy.internetshop.lib.Dao;
-import mate.academy.internetshop.lib.IdGenerator;
 import mate.academy.internetshop.model.User;
 
 @Dao
 public class UserDaoImpl implements UserDao {
     @Override
     public User create(User user) {
-        user.setId(IdGenerator.generateNewUserId());
         Storage.users.add(user);
         return user;
     }
