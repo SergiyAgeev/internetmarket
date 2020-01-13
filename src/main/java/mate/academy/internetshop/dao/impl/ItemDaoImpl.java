@@ -23,7 +23,8 @@ public class ItemDaoImpl implements ItemDao {
                 .stream()
                 .filter(i -> i.getId().equals(id))
                 .findFirst()
-                .get();
+                .orElseThrow(() ->
+                        new NoSuchElementException("there is no item with id " + id));
     }
 
     @Override

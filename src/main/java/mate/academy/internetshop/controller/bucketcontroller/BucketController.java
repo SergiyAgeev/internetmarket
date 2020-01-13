@@ -16,7 +16,7 @@ public class BucketController extends HttpServlet {
     @Inject
     private static BucketService bucketService;
 
-    public static final long USER_ID = 1L;
+    private static final long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

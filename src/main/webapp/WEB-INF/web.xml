@@ -110,7 +110,7 @@
 
     <servlet>
         <servlet-name>AddOrderFromBucket</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.ordercontroller.AddOrderFromBucket</servlet-class>
+        <servlet-class>mate.academy.internetshop.controller.ordercontroller.CompleteOrderController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddOrderFromBucket</servlet-name>

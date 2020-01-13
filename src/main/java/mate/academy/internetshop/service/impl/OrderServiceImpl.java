@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getUserOrders(Long userId) {
         return Storage.orders
                 .stream()
-                .filter(o -> o.getId().equals(userId))
+                .filter(o -> o.getUserId().equals(userId))
                 .collect(Collectors.toList());
     }
 

@@ -13,8 +13,8 @@ import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.OrderService;
 
-public class AddOrderFromBucket extends HttpServlet {
-    public static final long USER_ID = 1L;
+public class CompleteOrderController extends HttpServlet {
+    private static final long USER_ID = 1L;
     @Inject
     private static BucketService bucketService;
     @Inject
@@ -24,9 +24,8 @@ public class AddOrderFromBucket extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        List<Item> allItems = bucketService.getAllItems(bucketService.getByUserId(USER_ID));
         Order order = new Order(USER_ID);
-        order.setItems(allItems);
+        order.setItems(bucketService.getAllItems(bucketService.getByUserId(USER_ID)));
         List<Item> items = order.getItems();
         orderService.completeOrder(items, USER_ID);
         req.setAttribute("items", items);

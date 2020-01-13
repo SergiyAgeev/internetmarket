@@ -23,7 +23,9 @@ public class OrderDaoImpl implements OrderDao {
         return Storage.orders
                 .stream()
                 .filter(o -> o.getId().equals(id))
-                .findFirst().get();
+                .findFirst()
+                .orElseThrow(() ->
+                        new NoSuchElementException("there is no order with id " + id));
     }
 
     @Override

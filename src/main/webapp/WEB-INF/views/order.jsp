@@ -18,12 +18,6 @@
     </a>
     <br>
     <br>
-
-    <a href="deleteItem?item_id=${orderItems.id}">
-        <button>Delete order</button>
-    </a>
-
-    <br>
 </div>
 <div>
     <table border="2">

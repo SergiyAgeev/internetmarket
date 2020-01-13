@@ -2,7 +2,6 @@ package mate.academy.internetshop.controller.ordercontroller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,7 @@ import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.UserService;
 
 public class GetOrderByUserIdController extends HttpServlet {
-    public static final long USER_ID = 1L;
+    private static final long USER_ID = 1L;
     @Inject
     private static OrderService orderService;
     @Inject
@@ -26,10 +25,8 @@ public class GetOrderByUserIdController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<Order> orders = orderService.getAll().stream()
-                .filter(o -> o.getUserId().equals(USER_ID))
-                .collect(Collectors.toList());
 
+        List<Order> orders = orderService.getUserOrders(USER_ID);
         req.setAttribute("orders", orders);
         req.getRequestDispatcher("/WEB-INF/views/orderListbyUser.jsp").forward(req, resp);
     }
