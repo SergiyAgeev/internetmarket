@@ -126,5 +126,4 @@
         <url-pattern>/DeleteOrder</url-pattern>
     </servlet-mapping>
 
-
 </web-app>
