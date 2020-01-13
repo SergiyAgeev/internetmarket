@@ -66,6 +66,7 @@ public class BucketDaoImpl implements BucketDao {
         return Storage.buckets.stream()
                 .filter(b -> b.getUserId().equals(userId))
                 .findFirst()
-                .get();
+                .orElseThrow(() ->
+                        new NoSuchElementException("there is no bucket with id " + userId));
     }
 }
