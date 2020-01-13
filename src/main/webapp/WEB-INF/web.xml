@@ -3,7 +3,6 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-
     <listener>
         <listener-class>mate.academy.internetshop.controller.indexcontroller.InjectInitializer</listener-class>
     </listener>
@@ -124,6 +123,7 @@
     <servlet-mapping>
         <servlet-name>DeleteOrder</servlet-name>
         <url-pattern>/DeleteOrder</url-pattern>
+
     </servlet-mapping>
 
 </web-app>
