@@ -21,11 +21,11 @@ public class BucketController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        if (bucketService.getAllBuckets().isEmpty()) {
-            Bucket bucket = new Bucket(USER_ID);
-            bucketService.create(bucket);
-        }
-        Bucket bucket = bucketService.getByUserId(USER_ID);
+        Bucket bucket = bucketService.getAllBuckets()
+                .stream()
+                .filter(b -> b.getUserId().equals(USER_ID))
+                .findFirst()
+                .orElse(bucketService.create(new Bucket(USER_ID)));
         List<Item> allItems = bucketService.getAllItems(bucket);
         req.setAttribute("allItemsInBucket", allItems);
         req.setAttribute("bucket", bucket);
