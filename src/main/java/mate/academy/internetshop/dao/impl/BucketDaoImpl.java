@@ -1,5 +1,6 @@
 package mate.academy.internetshop.dao.impl;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -53,5 +54,19 @@ public class BucketDaoImpl implements BucketDao {
     @Override
     public boolean delete(Bucket bucket) {
         return Storage.buckets.remove(bucket);
+    }
+
+    @Override
+    public List<Bucket> getAllBuckets() {
+        return Storage.buckets;
+    }
+
+    @Override
+    public Bucket getByUserId(Long userId) {
+        return Storage.buckets.stream()
+                .filter(b -> b.getUserId().equals(userId))
+                .findFirst()
+                .orElseThrow(() ->
+                        new NoSuchElementException("there is no bucket with id " + userId));
     }
 }
