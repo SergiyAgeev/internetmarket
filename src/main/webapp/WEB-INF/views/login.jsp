@@ -1,7 +1,14 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: architect
+  Date: 14.01.20
+  Time: 15:04
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Registration</title>
+    <title>Login</title>
 </head>
 <style type="text/css">
     body {
@@ -10,17 +17,10 @@
     }
 </style>
 <body>
-<form action="register" method="post">
-    <h1>Create new user</h1>
+
+<form action="Login" method="post">
+    <h1>Login</h1>
     <hr>
-    <label for="name"><b>Name: </b></label>
-    <input type="text" placeholder="name" name="name" required>
-    <br>
-    <br>
-    <label for="secondName"><b>Second name: </b></label>
-    <input type="text" placeholder="second name" name="secondName" required>
-    <br>
-    <br>
     <label for="login"><b>Login: </b></label>
     <input type="text" placeholder="login" name="login" required>
     <br>
@@ -29,12 +29,9 @@
     <input type="password" placeholder="password" name="password" required>
     <br>
     <br>
-    <label for="age"><b>Age: </b></label>
-    <input type="number" placeholder="age" name="age" required>
-    <br>
-    <br>
-    <button type="submit">Create new user</button>
+    <button type="submit">Login</button>
 </form>
+<div style="color: darkred; font-size: 0.9rem" >${errorMsg}</div>
 <a href="/">
     <button>Return to index page</button>
 </a>

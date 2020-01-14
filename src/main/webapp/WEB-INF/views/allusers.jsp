@@ -18,10 +18,6 @@
     </a>
     <br>
     <br>
-    <a href="register">
-        <button>Register</button>
-    </a>
-    <br>
 </div>
 <table border="2">
     <tr>

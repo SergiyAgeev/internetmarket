@@ -6,9 +6,11 @@ public class User {
     private Long id;
     private String name;
     private String secondName;
+    private int age;
     private String login;
     private String password;
-    private int age;
+    private String token;
+    private Bucket bucket;
 
     public User() {
         this.id = IdGenerator.generateNewUserId();
@@ -72,6 +74,24 @@ public class User {
 
     public User setAge(int age) {
         this.age = age;
+        return this;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public User setToken(String token) {
+        this.token = token;
+        return this;
+    }
+
+    public Bucket getBucket() {
+        return bucket;
+    }
+
+    public User setBucket(Bucket bucket) {
+        this.bucket = bucket;
         return this;
     }
 
