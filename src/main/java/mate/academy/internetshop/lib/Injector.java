@@ -8,15 +8,18 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class Injector {
     private static final String PROJECT_MAIN_PACKAGE = "mate.academy.internetshop";
     private static List<Class> classes = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(Injector.class);
 
     static {
         try {
             classes.addAll(getClasses(PROJECT_MAIN_PACKAGE));
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Injector problems", e);
         }
     }
 
