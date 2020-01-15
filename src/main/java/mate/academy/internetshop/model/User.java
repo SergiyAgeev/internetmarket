@@ -10,7 +10,6 @@ public class User {
     private String login;
     private String password;
     private String token;
-    private Bucket bucket;
 
     public User() {
         this.id = IdGenerator.generateNewUserId();
@@ -83,15 +82,6 @@ public class User {
 
     public User setToken(String token) {
         this.token = token;
-        return this;
-    }
-
-    public Bucket getBucket() {
-        return bucket;
-    }
-
-    public User setBucket(Bucket bucket) {
-        this.bucket = bucket;
         return this;
     }
 

@@ -42,13 +42,13 @@ public class AuthenticationFilter implements Filter {
             if (cookie.getName().equals("MATE")) {
                 Optional<User> user = userService.getByToken(cookie.getValue());
                 if (user.isPresent()) {
-                    LOGGER.debug("User " + user.get().getName() + " was authenticated");
+                    LOGGER.info("User " + user.get().getName() + " was authenticated");
                     filterChain.doFilter(servletRequest, servletResponse);
                     return;
                 }
             }
         }
-        LOGGER.debug("User wasn't authenticated");
+        LOGGER.info("User wasn't authenticated");
         processUnAuthenticated(req, resp);
     }
 
