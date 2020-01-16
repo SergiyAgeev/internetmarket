@@ -1,11 +1,7 @@
 # internetmarket
-Реализовать JSP для
+   
+    В UserService добавить метод: User login(String login, String password);
+    В UserDao добавить метод Optional<User> findByLogin(String login) и спользовать его в методе userService.login(login, password)
+    Релизовать метод Optional<User> findByToken(String token)
+    Реализовать авторизацию юзера, создать cookie и httpSession
 
-    + Используйте статическую заглушку переменную USER_ID = 1. Она будет заменена при подключении security
-    + Отобразить список всех товаров
-    + Реализовать добавление товара в корзину
-    + Реализовать удаление товара из корзини
-    + Посмотреть список товаров в корзине (по bucket_id, сам bucket_id вы можете получить на основе USER_ID)
-    + Кнопка оформить заказ (реализовать в Корзине)
-    + Посмотреть список заказов (по user_id)
-    + Удалить заказ

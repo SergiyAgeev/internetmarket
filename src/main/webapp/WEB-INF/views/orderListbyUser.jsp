@@ -55,7 +55,7 @@
             </td>
             <td>
             <td>
-                <a href="DeleteOrder?order_id=${order.id}">
+                <a href="/servlet/DeleteOrder?order_id=${order.id}">
                     <button>Delete</button>
                 </a>
             </td>

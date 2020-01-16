@@ -13,7 +13,6 @@ import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
 
 public class DeleteItemFromBucketController extends HttpServlet {
-    private static final Long USER_ID = 1L;
     @Inject
     private static BucketService bucketService;
     @Inject
@@ -22,10 +21,11 @@ public class DeleteItemFromBucketController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        Long userId = (Long) req.getSession(true).getAttribute("userId");
         String itemId = req.getParameter("item_id");
         Item item = itemService.get(Long.valueOf(itemId));
-        Bucket bucket = bucketService.getByUserId(USER_ID);
+        Bucket bucket = bucketService.getByUserId(userId);
         bucketService.deleteItem(bucket, item);
-        resp.sendRedirect("/getAllItemsInBucket");
+        resp.sendRedirect("/servlet/getAllItemsInBucket");
     }
 }

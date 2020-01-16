@@ -22,6 +22,5 @@ public class GetAllItemsController extends HttpServlet {
         List<Item> items = itemService.getAllItems();
         req.setAttribute("allItems", items);
         req.getRequestDispatcher("/WEB-INF/views/allItems.jsp").forward(req, resp);
-
     }
 }
