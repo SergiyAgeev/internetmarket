@@ -1,7 +1,16 @@
 # internetmarket
    
-    В UserService добавить метод: User login(String login, String password);
-    В UserDao добавить метод Optional<User> findByLogin(String login) и спользовать его в методе userService.login(login, password)
-    Релизовать метод Optional<User> findByToken(String token)
-    Реализовать авторизацию юзера, создать cookie и httpSession
+  Реализовать авторизацию основанную на ролях
+  
+     + Создать роли: User и Admin
+     - Для Админа доступны только следующие URL:
+         - посмотреть всех юзеров
+         - операции которые относятся к товару (create, update, delete for Item), если они имплиментированы
+     - Для Юзера доступны только следующие URL:
+         - все операции по работе с корзиной
+         - оформление заказа и отображение списка заказов
+     - На завсимо от роли доступно:
+         - страница read item, logout, index и inject
+     - Реализовать LogoutController
+
 

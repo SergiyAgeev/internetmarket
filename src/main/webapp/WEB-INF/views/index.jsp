@@ -24,31 +24,35 @@
 <div class="topmenu">
     <ul>
 
-        <a href="/servlet/allItems"/>
+        <a href="/user/allItems"/>
         <li>Items page</li>
         </a>
         <br>
-        <a href="/servlet/getAllItemsInBucket">
+        <a href="/user/getAllItemsInBucket">
             <li>Bucket page</li>
         </a>
         <br>
-        <a href="/servlet/getOrderByUserId">
+        <a href="/user/getOrderByUserId">
             <li>Order page</li>
         </a>
         <br>
-
-        <a href="/servlet/showallusers">
-            <li>Users page</li>
-        </a>
-        <br>
+        <hr>
 
         <a href="register">
             <li>Register</li>
         </a>
         <br>
+        <a href="/admin/adminpage"/>
+        <li>Admin</li>
+        </a>
+        <br>
 
         <a href="Login">
             <li>Login</li>
+        </a>
+        <br>
+        <a href="Logout">
+            <li>Logout</li>
         </a>
     </ul>
 

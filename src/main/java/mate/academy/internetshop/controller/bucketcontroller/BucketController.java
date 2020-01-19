@@ -19,7 +19,7 @@ public class BucketController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        Long userId = (Long) req.getSession(true).getAttribute("userId");
+        Long userId = (Long) req.getSession().getAttribute("userId");
         Bucket bucket = bucketService.getByUserId(userId);
         List<Item> allItems = bucketService.getAllItems(bucket);
         req.setAttribute("allItemsInBucket", allItems);

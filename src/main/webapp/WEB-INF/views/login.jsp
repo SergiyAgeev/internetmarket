@@ -32,8 +32,10 @@
     <button type="submit">Login</button>
 </form>
 <div style="color: darkred; font-size: 0.9rem" >${errorMsg}</div>
-<a href="/">
-    <button>Return to index page</button>
-</a>
+<div>
+    <a href="/">
+        <button style="color: darkred">Return to index page</button>
+    </a>
+</div>
 </body>
 </html>

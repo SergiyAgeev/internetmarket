@@ -13,9 +13,11 @@
 </style>
 <body>
 <div>
-    <a href="/">
-        <button>Return to index page</button>
-    </a>
+    <div>
+        <a href="/">
+            <button style="color: darkred">Return to index page</button>
+        </a>
+    </div>
     <br>
     <br>
 </div>

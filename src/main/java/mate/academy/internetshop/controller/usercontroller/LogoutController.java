@@ -2,22 +2,24 @@ package mate.academy.internetshop.controller.usercontroller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.service.UserService;
-
-public class DeleteUserController extends HttpServlet {
-    @Inject
-    private static UserService userService;
+public class LogoutController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String userId = req.getParameter("user_id");
-        userService.deleteById(Long.valueOf(userId));
-        resp.sendRedirect("/admin/showallusers");
+        req.getSession().invalidate();
+        for (Cookie cookie : req.getCookies()) {
+            if (cookie.getName().equals("MATE")) {
+                cookie.setMaxAge(0);
+                cookie.setValue("");
+                resp.addCookie(cookie);
+            }
+        }
+        resp.sendRedirect("/index");
     }
 }
