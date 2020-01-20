@@ -12,10 +12,12 @@
     }
 </style>
 <body>
-<a href="/">
-    <button>Return to index page</button>
-    <br>
-</a>
+<div>
+    <a href="/">
+        <button style="color: darkred">Return to index page</button>
+    </a>
+</div>
+<br>
 <table border="2">
     <tr>
         <th>Order ID</th>
@@ -55,7 +57,7 @@
             </td>
             <td>
             <td>
-                <a href="/servlet/DeleteOrder?order_id=${order.id}">
+                <a href="/user/DeleteOrder?order_id=${order.id}">
                     <button>Delete</button>
                 </a>
             </td>

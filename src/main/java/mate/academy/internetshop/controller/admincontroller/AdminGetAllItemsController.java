@@ -1,23 +1,26 @@
-package mate.academy.internetshop.controller.itemcontroller;
+package mate.academy.internetshop.controller.admincontroller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mate.academy.internetshop.lib.Inject;
+import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.ItemService;
 
-public class DeleteItemController extends HttpServlet {
+public class AdminGetAllItemsController extends HttpServlet {
     @Inject
     private static ItemService itemService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String itemId = req.getParameter("item_id");
-        itemService.deleteById(Long.valueOf(itemId));
-        resp.sendRedirect("/admin/allItems");
+        List<Item> items = itemService.getAllItems();
+        req.setAttribute("allItems", items);
+        req.getRequestDispatcher("/WEB-INF/views/adminAllItems.jsp").forward(req, resp);
     }
 }

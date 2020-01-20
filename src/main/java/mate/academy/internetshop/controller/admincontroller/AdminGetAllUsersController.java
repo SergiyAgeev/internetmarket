@@ -1,4 +1,4 @@
-package mate.academy.internetshop.controller.usercontroller;
+package mate.academy.internetshop.controller.admincontroller;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,7 +11,7 @@ import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
 
-public class GetAllUsersController extends HttpServlet {
+public class AdminGetAllUsersController extends HttpServlet {
     @Inject
     private static UserService userService;
 
@@ -20,6 +20,6 @@ public class GetAllUsersController extends HttpServlet {
             throws ServletException, IOException {
         List<User> users = userService.getAllUsers();
         req.setAttribute("allUsers", users);
-        req.getRequestDispatcher("/WEB-INF/views/allusers.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/AdminAllUsers.jsp").forward(req, resp);
     }
 }
