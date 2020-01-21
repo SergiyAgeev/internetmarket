@@ -20,7 +20,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item get(Long id) {
-        return itemDao.get(id);
+        return itemDao.get(id).get();
     }
 
     @Override

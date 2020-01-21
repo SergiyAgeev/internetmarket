@@ -28,7 +28,7 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Prise</th>
+            <th>Price</th>
             <th>Delete</th>
         </tr>
         <c:forEach var="item" items="${allItems}">
