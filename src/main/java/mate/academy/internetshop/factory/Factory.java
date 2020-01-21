@@ -63,7 +63,7 @@ public class Factory {
         if (bucketServiceInstance == null) {
             bucketServiceInstance = new BucketServiceImpl();
         }
-        return new BucketServiceImpl();
+        return bucketServiceInstance;
     }
 
     public static ItemDao getItemDao() {
