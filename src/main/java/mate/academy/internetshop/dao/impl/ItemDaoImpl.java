@@ -2,6 +2,7 @@ package mate.academy.internetshop.dao.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.db.Storage;
@@ -18,13 +19,11 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public Item get(Long id) {
+    public Optional<Item> get(Long id) {
         return Storage.items
                 .stream()
                 .filter(i -> i.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() ->
-                        new NoSuchElementException("there is no item with id " + id));
+                .findFirst();
     }
 
     @Override
