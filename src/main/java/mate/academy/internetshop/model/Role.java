@@ -24,6 +24,10 @@ public class Role {
         return this;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public static Role of(String roleName) {
         return new Role(RoleName.valueOf(roleName));
     }

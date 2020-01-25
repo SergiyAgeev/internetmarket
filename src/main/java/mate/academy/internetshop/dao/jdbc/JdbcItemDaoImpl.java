@@ -52,7 +52,6 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
                 Item item = new Item();
                 item.setName(itemName);
                 item.setPrice(itemPrice);
-                item.setId(itemId);
                 return Optional.of(item);
             }
         } catch (SQLException e) {
@@ -111,7 +110,7 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
                 long id = resultSet.getLong("item_id");
                 String name = resultSet.getString("item_name");
                 double price = resultSet.getDouble("item_price");
-                Item item = new Item(id, name, price);
+                Item item = new Item(id,name, price);
                 items.add(item);
             }
         } catch (SQLException e) {

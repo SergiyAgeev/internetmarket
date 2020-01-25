@@ -8,21 +8,20 @@ public class Item {
     private Double price;
 
     public Item() {
-        this.id = IdGenerator.generateNewItemId();
     }
 
-    public Item(long id, String name, Double price) {
-        this();
+    public Item(Long id, String name, Double price) {
+        this.id = id;
         this.name = name;
         this.price = price;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

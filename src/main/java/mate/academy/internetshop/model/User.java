@@ -16,11 +16,9 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User() {
-        this.id = IdGenerator.generateNewUserId();
     }
 
     public User(String name, String secondName, String login, String password, int age) {
-        this();
         this.name = name;
         this.secondName = secondName;
         this.login = login;

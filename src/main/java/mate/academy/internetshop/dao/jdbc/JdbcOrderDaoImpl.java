@@ -4,17 +4,24 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.stream.Collectors;
 
+
+import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
-import mate.academy.internetshop.db.Storage;
+import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.lib.Dao;
+import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
+import org.apache.log4j.Logger;
 
 @Dao
 public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
-
+    private static Logger LOGGER = Logger.getLogger(JdbcOrderDaoImpl.class);
+    @Inject
+    private static ItemDao itemDao;
+    @Inject
+    private static UserDao userDao;
     public JdbcOrderDaoImpl(Connection connection) {
         super(connection);
     }
