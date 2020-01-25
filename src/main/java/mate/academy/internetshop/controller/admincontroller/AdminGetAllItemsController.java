@@ -1,6 +1,7 @@
 package mate.academy.internetshop.controller.admincontroller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,7 +20,8 @@ public class AdminGetAllItemsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<Item> items = itemService.getAllItems();
+        List<Item> items = null;
+        items = itemService.getAllItems();
         req.setAttribute("allItems", items);
         req.getRequestDispatcher("/WEB-INF/views/adminAllItems.jsp").forward(req, resp);
     }

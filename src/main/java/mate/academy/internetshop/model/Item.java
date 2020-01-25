@@ -11,7 +11,7 @@ public class Item {
         this.id = IdGenerator.generateNewItemId();
     }
 
-    public Item(String name, Double price) {
+    public Item(long id, String name, Double price) {
         this();
         this.name = name;
         this.price = price;

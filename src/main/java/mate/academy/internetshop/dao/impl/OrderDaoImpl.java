@@ -60,4 +60,9 @@ public class OrderDaoImpl implements OrderDao {
         return Storage.orders;
     }
 
+    @Override
+    public List<Order> getUserOrders(Long userId) {
+        return null;
+    }
+
 }
