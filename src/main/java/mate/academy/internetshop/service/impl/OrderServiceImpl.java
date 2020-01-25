@@ -44,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getUserOrders(Long userId) {
+        orderDao.getUserOrders(userId);
         return Storage.orders
                 .stream()
                 .filter(o -> o.getUserId().equals(userId))
