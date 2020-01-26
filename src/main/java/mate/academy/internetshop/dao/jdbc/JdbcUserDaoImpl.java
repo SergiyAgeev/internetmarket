@@ -94,12 +94,19 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User update(User user) {
-        String query = "DELETE FROM orders WHERE orders.user_id=?;";
+        String query = "UPDATE users SET user_name = ?, user_second_name= ?,"
+                + " user_login = ?, user_password = ?, user_age = ? WHERE user_id = ?;";
+
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, user.getId());
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getSecondName());
+            statement.setString(3, user.getLogin());
+            statement.setString(4, user.getPassword());
+            statement.setInt(4, user.getAge());
+            statement.setLong(6, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.warn("Can't update user with id = " + user.getId(), e);
+            LOGGER.warn("Can`t update user with id = " + user.getId());
         }
         return user;
     }
@@ -229,5 +236,23 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
         } catch (SQLException e) {
             LOGGER.warn("Can't delete user roles with id =" + userId, e);
         }
+    }
+
+    private void changeRolesExecute(User user, Set<Role> roles, String query) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (Role role : roles) {
+                statement.setLong(1, user.getId());
+                statement.setString(2, role.getRoleName().toString());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            LOGGER.warn("Can`t change role for user = " + user.getId());
+        }
+    }
+
+    private void deleteRoles(User user, Set<Role> roles) {
+        String query = "DELETE FROM user_roles WHERE user_id = ? AND "
+                + "role_id = (SELECT role_id FROM roles WHERE role_name = ?);";
+        changeRolesExecute(user, roles, query);
     }
 }
