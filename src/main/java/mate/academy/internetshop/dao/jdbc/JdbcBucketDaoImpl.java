@@ -114,7 +114,7 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
                 buckets.add(bucket);
             }
         } catch (SQLException e) {
-            LOGGER.warn("Can`t get all buckets",e);
+            LOGGER.warn("Can`t get all buckets", e);
         }
         List<Bucket> newBuckets = new ArrayList<>();
         for (Bucket bucket : buckets) {
