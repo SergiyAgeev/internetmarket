@@ -1,10 +1,12 @@
 package mate.academy.internetshop.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
 
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
@@ -13,6 +15,7 @@ import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
+import mate.academy.internetshop.model.User;
 import org.apache.log4j.Logger;
 
 @Dao
@@ -22,30 +25,48 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
     private static ItemDao itemDao;
     @Inject
     private static UserDao userDao;
+
     public JdbcOrderDaoImpl(Connection connection) {
         super(connection);
     }
 
     @Override
     public Order create(Order order) {
-        Statement stmt = null;
-        String query = "INSERT INTO 'orders' ('user_id') VALUES ('" + order.getUserId() + "');";
-        Long orderId = null; //call one the methods from statement
-        String insertOrderItemQuery = "INSERT INTO 'orders_items' ('order_id','item_id') " +
-                "VALUES ('%s', ' + '%s')";
+        String query = "INSERT INTO orders (user_id) VALUES (?);";
+        Long orderId = 0L;
+        try (PreparedStatement statement = connection.prepareStatement(query,
+                PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setLong(1, order.getUserId());
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            orderId = rs.getLong(1);
+        } catch (SQLException e) {
+            LOGGER.warn("Can't create new order", e);
+        }
         for (Item item : order.getItems()) {
-            try {
-                stmt.execute(String.format(insertOrderItemQuery, orderId, item.getId()));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            addItemToOrder(orderId, item.getId());
         }
         return new Order(orderId, order.getUserId(), order.getItems());
     }
 
     @Override
     public Order get(Long id) {
-        return null;
+        String query = "SELECT user_id FROM orders WHERE order_id=?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            long userId = 0L;
+            while (resultSet.next()) {
+                userId = resultSet.getLong("user_id");
+            }
+            List<Item> items = getItemsFromOrder(id);
+            User user = userDao.get(userId).get();
+            return new Order(id, user.getId(), items);
+        } catch (SQLException e) {
+            LOGGER.warn("Can't get order with id = " + id, e);
+            return null;
+        }
     }
 
     @Override
@@ -81,5 +102,33 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         String getUserQuery = "SELECT * FROM users WHERE users.user_id = <SOME_VALUE>";
         //сформувати список ордерів і повернути його
         return null;
+    }
+
+    private void addItemToOrder(Long orderId, Long itemId) {
+        String insertOrderItemQuery = "INSERT INTO orders_items "
+                + "(orders_id, item_id) VALUES (?, ?);";
+        try (PreparedStatement statement = connection.prepareStatement(insertOrderItemQuery)) {
+            statement.setLong(1, orderId);
+            statement.setLong(2, itemId);
+            statement.execute();
+        } catch (SQLException e) {
+            LOGGER.warn("Can't add item to order with id = " + orderId, e);
+        }
+    }
+
+    private List<Item> getItemsFromOrder(Long orderId) {
+        String query = "SELECT item_id FROM orders_items WHERE orders_id=?;";
+        try (PreparedStatement statement = connection.prepareStatement(query);) {
+            statement.setLong(1, orderId);
+            ResultSet resultSet = statement.executeQuery();
+            List<Item> items = new ArrayList<>();
+            while (resultSet.next()) {
+                items.add(itemDao.get(resultSet.getLong("item_id")).get());
+            }
+            return items;
+        } catch (SQLException e) {
+            LOGGER.warn("Can't get items from order with id = " + orderId, e);
+        }
+        return Collections.emptyList();
     }
 }

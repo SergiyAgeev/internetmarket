@@ -11,13 +11,16 @@ public class Bucket {
     private List<Item> items;
 
     public Bucket() {
-        id = IdGenerator.generateNewBucketId();
     }
 
     public Bucket(Long userId) {
-        this();
         items = new ArrayList<>();
         this.userId = userId;
+    }
+
+    public Bucket(List<Item> items, Long userId) {
+        this.userId = userId;
+        this.items = items;
     }
 
     public Long getId() {

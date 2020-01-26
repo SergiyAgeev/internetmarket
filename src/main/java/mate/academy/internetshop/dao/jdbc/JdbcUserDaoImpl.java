@@ -10,23 +10,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import mate.academy.internetshop.dao.BucketDao;
-import mate.academy.internetshop.dao.ItemDao;
-import mate.academy.internetshop.dao.OrderDao;
+
 import mate.academy.internetshop.dao.UserDao;
-import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Dao;
-import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
-import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.Logger;
 
 @Dao
 public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
     private static Logger LOGGER = Logger.getLogger(JdbcUserDaoImpl.class);
-    private static String DB_NAME = "internet_market";
 
     public JdbcUserDaoImpl(Connection connection) {
         super(connection);
@@ -35,9 +28,9 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
     @Override
     public User create(User user) {
         String query = "INSERT INTO users " +
-                "(user_name, user_second_name , user_login," +
-                " user_password, user_token, user_age)" +
-                " VALUES (?, ?, ?, ?, ?, ?);";
+                "(user_name, user_second_name , user_login,"
+                + " user_password, user_token, user_age)"
+                + " VALUES (?, ?, ?, ?, ?, ?);";
         long userId = 0L;
         try (PreparedStatement statement = connection.prepareStatement(query,
                 PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -81,7 +74,6 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
                 user = new User(name, surname, login, password, age);
                 user.setId(userId);
                 user.setToken(token);
-
             }
             Set<Role> roles = getAllUsersRoles(id);
             user.setRoles(roles);
@@ -91,12 +83,10 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
         return Optional.of(user);
     }
 
-
     @Override
     public User update(User user) {
         String query = "UPDATE users SET user_name = ?, user_second_name= ?,"
                 + " user_login = ?, user_password = ?, user_age = ? WHERE user_id = ?;";
-
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getSecondName());
@@ -236,23 +226,5 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
         } catch (SQLException e) {
             LOGGER.warn("Can't delete user roles with id =" + userId, e);
         }
-    }
-
-    private void changeRolesExecute(User user, Set<Role> roles, String query) {
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (Role role : roles) {
-                statement.setLong(1, user.getId());
-                statement.setString(2, role.getRoleName().toString());
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            LOGGER.warn("Can`t change role for user = " + user.getId());
-        }
-    }
-
-    private void deleteRoles(User user, Set<Role> roles) {
-        String query = "DELETE FROM user_roles WHERE user_id = ? AND "
-                + "role_id = (SELECT role_id FROM roles WHERE role_name = ?);";
-        changeRolesExecute(user, roles, query);
     }
 }
