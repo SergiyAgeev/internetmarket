@@ -69,7 +69,7 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
             statement.setLong(3, item.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Can't update item with id = " + item.getId(), e);
+            LOGGER.warn("Can't update item with id = " + item.getId(), e);
         }
         return item;
     }

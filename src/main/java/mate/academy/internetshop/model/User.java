@@ -26,6 +26,16 @@ public class User {
         this.age = age;
     }
 
+    public User(long userId, User user) {
+        this.id = userId;
+        name = user.name;
+        secondName = user.secondName;
+        login = user.login;
+        password = user.password;
+        token = user.token;
+        roles = user.roles;
+    }
+
     public String getSecondName() {
         return secondName;
     }
