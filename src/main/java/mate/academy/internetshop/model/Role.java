@@ -1,18 +1,16 @@
 package mate.academy.internetshop.model;
 
+import java.util.Objects;
+
 import mate.academy.internetshop.lib.IdGenerator;
 
 public class Role {
-    private final Long id;
+    private Long id;
     private RoleName roleName;
 
     public Role(RoleName roleName) {
-        this();
-        this.roleName = roleName;
-    }
 
-    public Role() {
-        this.id = IdGenerator.generateNewRoleId();
+        this.roleName = roleName;
     }
 
     public RoleName getRoleName() {
@@ -34,5 +32,23 @@ public class Role {
 
     public enum RoleName {
         USER, ADMIN;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Role role = (Role) o;
+        return id.equals(role.id)
+                && roleName == role.roleName;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, roleName);
     }
 }

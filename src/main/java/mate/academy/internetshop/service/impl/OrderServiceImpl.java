@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.db.Storage;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
 import mate.academy.internetshop.model.Item;
@@ -18,32 +19,32 @@ public class OrderServiceImpl implements OrderService {
     private static OrderDao orderDao;
 
     @Override
-    public Order create(Order order) {
+    public Order create(Order order) throws DataProcessingException {
         return orderDao.create(order);
     }
 
     @Override
-    public Order get(Long id) {
+    public Order get(Long id) throws DataProcessingException {
         return orderDao.get(id);
     }
 
     @Override
-    public Order update(Order order) {
+    public Order update(Order order) throws DataProcessingException {
         return orderDao.update(order);
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public boolean deleteById(Long id) throws DataProcessingException {
         return orderDao.deleteById(id);
     }
 
     @Override
-    public boolean delete(Order order) {
+    public boolean delete(Order order) throws DataProcessingException {
         return orderDao.delete(order);
     }
 
     @Override
-    public List<Order> getUserOrders(Long userId) {
+    public List<Order> getUserOrders(Long userId) throws DataProcessingException {
         orderDao.getUserOrders(userId);
         return Storage.orders
                 .stream()
@@ -52,12 +53,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAll() {
+    public List<Order> getAll() throws DataProcessingException {
         return orderDao.getAll();
     }
 
     @Override
-    public Order completeOrder(List<Item> items, Long userId) {
+    public Order completeOrder(List<Item> items, Long userId) throws DataProcessingException {
         Order order = new Order(userId);
         List<Item> orderItems = new ArrayList<>(items);
         order.setItems(orderItems);

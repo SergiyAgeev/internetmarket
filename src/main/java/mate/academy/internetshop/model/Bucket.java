@@ -18,6 +18,11 @@ public class Bucket {
         this.userId = userId;
     }
 
+    public Bucket(User user) {
+        items = new ArrayList<>();
+        userId = user.getId();
+    }
+
     public Bucket(List<Item> items, Long userId) {
         this.userId = userId;
         this.items = items;
@@ -39,14 +44,31 @@ public class Bucket {
         return userId;
     }
 
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     public Bucket setUserId(Long userId) {
         this.userId = userId;
         return this;
     }
 
-    public Bucket setItems(List<Item> items) {
-        this.items = items;
+    public void addItemToBucket(Item item) {
+        items.add(item);
+    }
+
+    public Bucket addItemsToBucket(List<Item> items) {
+        this.items.removeAll(items);
+        this.items.addAll(items);
         return this;
+    }
+
+    public void deleteItem(Item item) {
+        items.remove(item);
+    }
+
+    public void clearBucket() {
+        items.clear();
     }
 
     @Override

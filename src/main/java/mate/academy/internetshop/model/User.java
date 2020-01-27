@@ -1,6 +1,7 @@
 package mate.academy.internetshop.model;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import mate.academy.internetshop.lib.IdGenerator;
@@ -109,6 +110,33 @@ public class User {
     public void addRole(Role role) {
         roles.add(role);
     }
+    public void addRoles(Set<Role> newRoles) {
+        roles.addAll(newRoles);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return age == user.age
+                && id.equals(user.id)
+                && Objects.equals(name, user.name)
+                && Objects.equals(secondName, user.secondName)
+                && login.equals(user.login)
+                && password.equals(user.password)
+                && Objects.equals(token, user.token)
+                && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, secondName, age, login, password, token, roles);
+    }
 
     @Override
     public String toString() {
@@ -116,7 +144,6 @@ public class User {
                 + ", name='" + name + '\''
                 + ", secondName='" + secondName + '\''
                 + ", login='" + login + '\''
-                + ", password='" + password + '\''
                 + ", age=" + age + '}';
     }
 }

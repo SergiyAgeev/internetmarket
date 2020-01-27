@@ -11,6 +11,8 @@ import mate.academy.internetshop.dao.UserDao;
 
 import mate.academy.internetshop.dao.impl.BucketDaoImpl;
 import mate.academy.internetshop.dao.impl.OrderDaoImpl;
+import mate.academy.internetshop.dao.jdbc.JdbcBucketDaoImpl;
+import mate.academy.internetshop.dao.jdbc.JdbcOrderDaoImpl;
 import mate.academy.internetshop.dao.jdbc.JdbcUserDaoImpl;
 import mate.academy.internetshop.dao.jdbc.JdbcItemDaoImpl;
 
@@ -54,7 +56,7 @@ public class Factory {
 
     public static BucketDao getBucketDao() {
         if (bucketDaoInstance == null) {
-            bucketDaoInstance = new BucketDaoImpl();
+            bucketDaoInstance = new JdbcBucketDaoImpl(connection);
         }
         return bucketDaoInstance;
     }
@@ -82,7 +84,7 @@ public class Factory {
 
     public static OrderDao getOrderDao() {
         if (orderDaoInstance == null) {
-            orderDaoInstance = new OrderDaoImpl();
+            orderDaoInstance = new JdbcOrderDaoImpl(connection);
         }
         return orderDaoInstance;
     }

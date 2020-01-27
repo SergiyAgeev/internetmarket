@@ -1,6 +1,7 @@
 package mate.academy.internetshop.web.filters;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,7 +12,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
@@ -31,30 +34,38 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
+
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-        if (req.getCookies() == null) {
-            LOGGER.warn("cookies are null");
+        HttpSession session = req.getSession(false);
+
+        if (session == null) {
             processUnAuthenticated(req, resp);
             return;
         }
-        for (Cookie cookie : req.getCookies()) {
-            if (cookie.getName().equals("MATE")) {
-                Optional<User> user = userService.getByToken(cookie.getValue());
-                if (user.isPresent()) {
-                    LOGGER.info("User " + user.get().getName() + " was authenticated");
-                    filterChain.doFilter(servletRequest, servletResponse);
-                    return;
-                }
-            }
+
+        Long userId = (Long) session.getAttribute("user_id");
+
+        if (userId == null) {
+            processUnAuthenticated(req, resp);
+            return;
         }
-        LOGGER.info("User wasn't authenticated");
-        processUnAuthenticated(req, resp);
+
+        try {
+            userService.get(userId);
+            filterChain.doFilter(servletRequest, servletResponse);
+        } catch (NoSuchElementException e) {
+            LOGGER.error("Session with no existing user ID : " + e);
+            resp.sendRedirect( "/logout");
+        } catch (DataProcessingException e) {
+            LOGGER.error(e);
+            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
+        }
     }
 
     private void processUnAuthenticated(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        resp.sendRedirect("/Login");
+        resp.sendRedirect("/login");
     }
 
     @Override

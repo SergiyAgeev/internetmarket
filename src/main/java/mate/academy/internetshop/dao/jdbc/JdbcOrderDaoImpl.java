@@ -11,6 +11,7 @@ import java.util.List;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.UserDao;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
@@ -71,6 +72,28 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
 
     @Override
     public Order update(Order order) {
+        String query = "DELETE FROM orders_items WHERE orders_id=?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, order.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+//            throw new DataProcessingException("Can`t update the orders");
+            LOGGER.warn("warn");
+        }
+        String query2 = "INSERT INTO orders_items (orders_id, item_id) VALUES" +
+                "(?,?);";
+        try (PreparedStatement statement = connection.prepareStatement(query2)) {
+            statement.setLong(1, order.getId());
+            for (Item item : order.getItems()) {
+                statement.setLong(2, item.getId());
+                statement.executeUpdate();
+            }
+
+
+        } catch (SQLException e) {
+            LOGGER.warn("warn");
+        }
+
         return null;
     }
 
