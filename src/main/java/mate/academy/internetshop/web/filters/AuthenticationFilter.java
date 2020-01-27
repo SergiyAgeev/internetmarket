@@ -50,7 +50,6 @@ public class AuthenticationFilter implements Filter {
             processUnAuthenticated(req, resp);
             return;
         }
-
         try {
             userService.get(userId);
             filterChain.doFilter(servletRequest, servletResponse);

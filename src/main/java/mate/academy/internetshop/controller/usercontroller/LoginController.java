@@ -25,6 +25,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
     }
 
@@ -35,7 +36,7 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("password");
         try {
             User user = userService.login(login, password);
-            HttpSession session = req.getSession();
+            HttpSession session = req.getSession(true);
             session.setAttribute("userId", user.getId());
             resp.sendRedirect("/login");
         } catch (AuthenticationException e) {

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="allItemsInBucket" scope="request" type="java.util.List<mate.academy.internetshop.model.Item>"/>
+<jsp:useBean id="bucket" scope="request" type="mate.academy.internetshop.model.Bucket"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
@@ -32,7 +32,7 @@
         <th>Prise</th>
         <th>Delete</th>
     </tr>
-    <c:forEach var="itemInBucket" items="${allItemsInBucket}">
+    <c:forEach var="itemInBucket" items="${bucket.items}">
         <tr>
             <td>
                 <c:out value="${itemInBucket.id}"/>

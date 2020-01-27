@@ -5,6 +5,7 @@ import java.util.List;
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
+import mate.academy.internetshop.model.User;
 
 public interface BucketService {
 
@@ -19,6 +20,8 @@ public interface BucketService {
     boolean deleteById(Long id)throws DataProcessingException;
 
     boolean delete(Bucket bucket)throws DataProcessingException;
+
+    Bucket getByUser(User user) throws DataProcessingException;
 
     void addItem(Bucket bucket, Item item)throws DataProcessingException;
 

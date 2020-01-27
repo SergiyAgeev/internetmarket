@@ -1,4 +1,4 @@
-<jsp:useBean id="dpe_msg" scope="request" type="java.lang.String"/>
+<jsp:useBean id="err_msg" scope="request" type="java.lang.String"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -13,7 +13,7 @@
 </style>
 <body>
 <h1 style="color: darkred; text-align: center;">Sorry, error!</h1>
-<h3>${dpe_msg}</h3><br>
+<h3>${err_msg}</h3><br>
 <a href="/">
     <button style="color: darkred">Return to index page</button>
 </a>

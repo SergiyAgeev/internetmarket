@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
@@ -24,7 +25,11 @@ public class InjectDataController extends HttpServlet {
         user.addRole(Role.of("USER"));
         user.setLogin("user");
         user.setPassword("1");
-        userService.create(user);
+        try {
+            userService.create(user);
+        } catch (DataProcessingException e) {
+            e.printStackTrace();
+        }
 
         User admin = new User();
         admin.setName("admin");
@@ -32,7 +37,11 @@ public class InjectDataController extends HttpServlet {
         admin.addRole(Role.of("ADMIN"));
         admin.setLogin("admin");
         admin.setPassword("1");
-        userService.create(admin);
+        try {
+            userService.create(admin);
+        } catch (DataProcessingException e) {
+            e.printStackTrace();
+        }
         resp.sendRedirect("/index");
     }
 }

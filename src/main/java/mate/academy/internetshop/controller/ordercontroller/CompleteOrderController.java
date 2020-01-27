@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
@@ -24,9 +25,17 @@ public class CompleteOrderController extends HttpServlet {
             throws ServletException, IOException {
         Long userId = (Long) req.getSession(true).getAttribute("userId");
         Order order = new Order(userId);
-        order.setItems(bucketService.getAllItems(bucketService.getByUserId(userId)));
+        try {
+            order.setItems(bucketService.getAllItems(bucketService.getByUserId(userId)));
+        } catch (DataProcessingException e) {
+            e.printStackTrace();
+        }
         List<Item> items = order.getItems();
-        orderService.completeOrder(items, userId);
+        try {
+            orderService.completeOrder(items, userId);
+        } catch (DataProcessingException e) {
+            e.printStackTrace();
+        }
         req.setAttribute("items", items);
         req.getRequestDispatcher("/WEB-INF/views/order.jsp").forward(req, resp);
     }

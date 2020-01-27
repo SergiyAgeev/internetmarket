@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.ItemService;
@@ -21,7 +22,11 @@ public class AdminGetAllItemsController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         List<Item> items = null;
-        items = itemService.getAllItems();
+        try {
+            items = itemService.getAllItems();
+        } catch (DataProcessingException e) {
+            e.printStackTrace();
+        }
         req.setAttribute("allItems", items);
         req.getRequestDispatcher("/WEB-INF/views/adminAllItems.jsp").forward(req, resp);
     }

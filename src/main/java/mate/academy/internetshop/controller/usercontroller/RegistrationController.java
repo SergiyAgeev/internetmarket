@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
@@ -33,7 +34,12 @@ public class RegistrationController extends HttpServlet {
         user.setLogin(req.getParameter("login"));
         user.setPassword(req.getParameter("password"));
         user.addRole(Role.of("USER"));
-        User createdUser = userService.create(user);
+        User createdUser = null;
+        try {
+            createdUser = userService.create(user);
+        } catch (DataProcessingException e) {
+            e.printStackTrace();
+        }
         HttpSession session = req.getSession();
         session.setAttribute("userId", createdUser.getId());
         Cookie cookie = new Cookie("MATE", createdUser.getToken());

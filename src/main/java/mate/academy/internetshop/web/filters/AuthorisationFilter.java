@@ -66,7 +66,7 @@ public class AuthorisationFilter implements Filter {
             return;
         }
 
-        Long userId = (Long) req.getSession().getAttribute("user_id");
+        Long userId = (Long) req.getSession().getAttribute("userId");
         User user = null;
 
         try {

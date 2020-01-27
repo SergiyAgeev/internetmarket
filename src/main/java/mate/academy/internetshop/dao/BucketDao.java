@@ -20,5 +20,4 @@ public interface BucketDao {
 
     List<Bucket> getAllBuckets() throws DataProcessingException;
 
-    Bucket getByUserId(Long userId) throws DataProcessingException;
 }

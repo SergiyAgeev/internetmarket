@@ -61,12 +61,4 @@ public class BucketDaoImpl implements BucketDao {
         return Storage.buckets;
     }
 
-    @Override
-    public Bucket getByUserId(Long userId) {
-        return Storage.buckets.stream()
-                .filter(b -> b.getUserId().equals(userId))
-                .findFirst()
-                .orElseThrow(() ->
-                        new NoSuchElementException("there is no bucket with id " + userId));
-    }
 }
