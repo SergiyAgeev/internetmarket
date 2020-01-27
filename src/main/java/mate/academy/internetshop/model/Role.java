@@ -9,7 +9,6 @@ public class Role {
     private RoleName roleName;
 
     public Role(RoleName roleName) {
-
         this.roleName = roleName;
     }
 
@@ -20,6 +19,10 @@ public class Role {
     public Role setRoleName(RoleName roleName) {
         this.roleName = roleName;
         return this;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
