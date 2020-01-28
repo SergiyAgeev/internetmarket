@@ -2,8 +2,6 @@ package mate.academy.internetshop.model;
 
 import java.util.Objects;
 
-import mate.academy.internetshop.lib.IdGenerator;
-
 public class Role {
     private Long id;
     private RoleName roleName;

@@ -11,6 +11,7 @@ import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
+import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.OrderService;
 
 @Service
@@ -25,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order get(Long id) throws DataProcessingException {
-        return orderDao.get(id);
+        return orderDao.get(id).get();
     }
 
     @Override
@@ -44,11 +45,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getUserOrders(Long userId) throws DataProcessingException {
-        orderDao.getUserOrders(userId);
-        return Storage.orders
+    public List<Order> getUserOrders(User user) throws DataProcessingException {
+        return getAll()
                 .stream()
-                .filter(o -> o.getUserId().equals(userId))
+                .filter(order -> order.getUserId().equals(user.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -58,8 +58,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order completeOrder(List<Item> items, Long userId) throws DataProcessingException {
-        Order order = new Order(userId);
+    public Order completeOrder(List<Item> items, User user) throws DataProcessingException {
+        Order order = new Order(user);
         List<Item> orderItems = new ArrayList<>(items);
         order.setItems(orderItems);
         return create(order);

@@ -11,5 +11,6 @@ public class AdminGetAdminsPage extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/adminpage.jsp").forward(req, resp);
+
     }
 }

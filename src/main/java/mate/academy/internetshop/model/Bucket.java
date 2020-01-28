@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import mate.academy.internetshop.lib.IdGenerator;
-
 public class Bucket {
     private Long id;
     private Long userId;
@@ -61,13 +59,6 @@ public class Bucket {
     public void addItemsToBucket(List<Item> items) {
         this.items.removeAll(items);
         this.items.addAll(items);
-    }
-    public void clear() {
-        items.clear();
-    }
-
-    public void deleteItem(Item item) {
-        items.remove(item);
     }
 
     @Override

@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import mate.academy.internetshop.lib.IdGenerator;
-
 public class User {
     private Long id;
     private String name;
@@ -109,9 +107,6 @@ public class User {
 
     public void addRole(Role role) {
         roles.add(role);
-    }
-    public void addRoles(Set<Role> newRoles) {
-        roles.addAll(newRoles);
     }
 
     @Override

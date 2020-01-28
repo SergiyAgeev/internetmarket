@@ -44,7 +44,7 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        Long userId = (Long) session.getAttribute("user_id");
+        Long userId = (Long) session.getAttribute("userId");
 
         if (userId == null) {
             processUnAuthenticated(req, resp);

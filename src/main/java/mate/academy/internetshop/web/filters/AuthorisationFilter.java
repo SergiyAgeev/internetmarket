@@ -58,7 +58,7 @@ public class AuthorisationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
-        String requestedUrl = req.getRequestURI().replace(req.getContextPath(), "");
+        String requestedUrl = req.getRequestURI();
         Role.RoleName roleName = protectedUrls.get(requestedUrl);
 
         if (roleName == null) {
@@ -94,7 +94,8 @@ public class AuthorisationFilter implements Filter {
     }
 
     private boolean verifyRole(User user, Role.RoleName roleName) {
-        return user.getRoles().stream()
+        return user.getRoles()
+                .stream()
                 .anyMatch(role -> role.getRoleName().equals(roleName));
     }
     private void processAuthorized(HttpServletRequest req, HttpServletResponse resp,

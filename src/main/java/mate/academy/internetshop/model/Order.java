@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import mate.academy.internetshop.lib.IdGenerator;
-
 public class Order {
     private Long id;
     private Long userId;
@@ -14,6 +12,10 @@ public class Order {
     public Order(Long userId) {
         items = new ArrayList<>();
         this.userId = userId;
+    }
+    public Order(User user) {
+        items = new ArrayList<>();
+        userId = user.getId();
     }
 
     public Long getId() {
