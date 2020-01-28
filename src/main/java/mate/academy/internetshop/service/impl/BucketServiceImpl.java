@@ -12,7 +12,6 @@ import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
-import org.apache.log4j.Logger;
 
 @Service
 public class BucketServiceImpl implements BucketService {

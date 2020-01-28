@@ -108,7 +108,6 @@ public class User {
     public void addRole(Role role) {
         roles.add(role);
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

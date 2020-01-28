@@ -6,14 +6,12 @@ import static mate.academy.internetshop.model.Role.RoleName.USER;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,7 +20,6 @@ import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 public class AuthorisationFilter implements Filter {
@@ -72,7 +69,7 @@ public class AuthorisationFilter implements Filter {
         try {
             user = userService.get(userId);
         } catch (DataProcessingException e) {
-            LOGGER.error("error",e);
+            LOGGER.error("err_msg",e);
             req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
 

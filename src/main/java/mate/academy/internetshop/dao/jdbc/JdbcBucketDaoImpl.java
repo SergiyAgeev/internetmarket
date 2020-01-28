@@ -15,15 +15,9 @@ import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 @Dao
 public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao {
-
-    private static final String BUCKET = "bucket";
-    private static final String BUCKET_ITEMS = "bucket_items";
-    private static final String ITEMS = "items";
 
     public JdbcBucketDaoImpl(Connection connection) {
         super(connection);
@@ -41,7 +35,7 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
                 Long bucketId = rs.getLong(1);
                 bucket.setId(bucketId);
             }
-            addItems(bucket, bucket.getItems());
+            addItemsToBucket(bucket, bucket.getItems());
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create bucket " + e);
         }
@@ -63,7 +57,7 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
                 return Optional.of(bucket);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get bucket: " + e);
+            throw new DataProcessingException("Can`t get bucket with id = " + id, e);
         }
         return Optional.empty();
     }
@@ -81,13 +75,13 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
 
             List<Item> itemsToDelete = new ArrayList<>(oldItems);
             itemsToDelete.removeAll(newItems);
-            deleteItems(bucket, itemsToDelete);
+            deleteItemsFromBucket(bucket, itemsToDelete);
 
             List<Item> itemsToAdd = new ArrayList<>(newItems);
             itemsToAdd.removeAll(oldItems);
-            addItems(bucket, itemsToAdd);
+            addItemsToBucket(bucket, itemsToAdd);
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to update bucket: " + e);
+            throw new DataProcessingException("Can`t update bucket with id = " + bucket.getId(), e);
         }
         return bucket;
     }
@@ -100,14 +94,14 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public boolean delete(Bucket bucket) throws DataProcessingException {
-        deleteItems(bucket, bucket.getItems());
+        deleteItemsFromBucket(bucket, bucket.getItems());
         String query = "DELETE FROM bucket WHERE id = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, bucket.getId());
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to delete bucket: " + e);
+            throw new DataProcessingException("Can`t delete bucket with id =  " + bucket.getId(), e);
         }
     }
 
@@ -126,22 +120,22 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
                 buckets.add(bucket);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get all buckets: " + e);
+            throw new DataProcessingException("Can`t get all buckets" + e);
         }
         return buckets;
     }
 
-    private void addItems(Bucket bucket, List<Item> items) throws DataProcessingException {
+    private void addItemsToBucket(Bucket bucket, List<Item> items) throws DataProcessingException {
         String query = "INSERT INTO bucket_items (bucket_id, item_id) VALUES (?, ?);";
-        changeBucketItemsExecute(bucket, items, query);
+        updateItemsInBucket(bucket, items, query);
     }
 
-    private void deleteItems(Bucket bucket, List<Item> items) throws DataProcessingException {
+    private void deleteItemsFromBucket(Bucket bucket, List<Item> items) throws DataProcessingException {
         String query = "DELETE FROM bucket_items WHERE bucket_id = ? AND item_id = ?;";
-        changeBucketItemsExecute(bucket, items, query);
+        updateItemsInBucket(bucket, items, query);
     }
 
-    private void changeBucketItemsExecute(Bucket bucket, List<Item> items, String query)
+    private void updateItemsInBucket(Bucket bucket, List<Item> items, String query)
             throws DataProcessingException {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (Item item : items) {
@@ -150,7 +144,7 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to update items in bucket: " + e);
+            throw new DataProcessingException("Can`t update items in bucket with id = " + bucket.getId(), e);
         }
     }
 
@@ -170,7 +164,7 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
                 items.add(item);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get items from bucket: " + e);
+            throw new DataProcessingException("Can`t get all items from bucket with id = " + bucket.getId(), e);
         }
         return items;
     }

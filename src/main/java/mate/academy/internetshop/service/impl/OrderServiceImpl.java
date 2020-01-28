@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import mate.academy.internetshop.dao.OrderDao;
-import mate.academy.internetshop.db.Storage;
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;

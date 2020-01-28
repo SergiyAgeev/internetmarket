@@ -2,21 +2,18 @@ package mate.academy.internetshop.web.filters;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -54,7 +51,7 @@ public class AuthenticationFilter implements Filter {
             userService.get(userId);
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (NoSuchElementException e) {
-            LOGGER.error("Session with no existing user ID : " + e);
+            LOGGER.error("There is no session with this user" + e);
             resp.sendRedirect( "/logout");
         } catch (DataProcessingException e) {
             LOGGER.error(e);

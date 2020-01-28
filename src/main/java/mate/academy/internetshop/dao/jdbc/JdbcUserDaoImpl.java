@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
@@ -54,7 +53,7 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
             }
             newUser = new User(id, user);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create new user with id=" + user.getId(), e);
+            throw new DataProcessingException("Can't create new user with id = " + user.getId(), e);
         }
         return newUser;
     }

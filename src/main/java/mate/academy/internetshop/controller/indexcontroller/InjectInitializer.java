@@ -12,14 +12,13 @@ public class InjectInitializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         try {
-            LOGGER.info("try to Dependency injection");
+            LOGGER.info("+++++  trying to Dependency injection+++++  ");
             Injector.injectDependency();
         } catch (IllegalAccessException e) {
-            LOGGER.error("Problem with initialization of dependencies", e);
+            LOGGER.error("!!! Problem with initialization of dependencies !!!", e);
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 

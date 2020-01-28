@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -179,4 +178,3 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         return items;
     }
 }
-

@@ -60,7 +60,6 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get item with id = " + id, e);
-
         }
         return Optional.empty();
     }
@@ -116,4 +115,3 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
         return items;
     }
 }
-
