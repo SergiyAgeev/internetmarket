@@ -63,8 +63,12 @@ public class Bucket {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Bucket bucket = (Bucket) o;
         return id.equals(bucket.id)
                 && userId.equals(bucket.userId)

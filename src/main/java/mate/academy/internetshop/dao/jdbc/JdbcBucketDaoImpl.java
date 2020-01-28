@@ -101,7 +101,8 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t delete bucket with id =  " + bucket.getId(), e);
+            throw new DataProcessingException("Can`t delete bucket with id = "
+                    + bucket.getId(), e);
         }
     }
 
@@ -126,11 +127,13 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
     }
 
     private void addItemsToBucket(Bucket bucket, List<Item> items) throws DataProcessingException {
-        String query = "INSERT INTO bucket_items (bucket_id, item_id) VALUES (?, ?);";
+        String query = "INSERT INTO bucket_items (bucket_id, item_id)"
+                + " VALUES (?, ?);";
         updateItemsInBucket(bucket, items, query);
     }
 
-    private void deleteItemsFromBucket(Bucket bucket, List<Item> items) throws DataProcessingException {
+    private void deleteItemsFromBucket(Bucket bucket, List<Item> items)
+            throws DataProcessingException {
         String query = "DELETE FROM bucket_items WHERE bucket_id = ? AND item_id = ?;";
         updateItemsInBucket(bucket, items, query);
     }
@@ -144,7 +147,8 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t update items in bucket with id = " + bucket.getId(), e);
+            throw new DataProcessingException("Can`t update items in bucket with id = "
+                    + bucket.getId(), e);
         }
     }
 
@@ -164,7 +168,8 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
                 items.add(item);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all items from bucket with id = " + bucket.getId(), e);
+            throw new DataProcessingException("Can`t get all items from bucket with id = "
+                    + bucket.getId(), e);
         }
         return items;
     }

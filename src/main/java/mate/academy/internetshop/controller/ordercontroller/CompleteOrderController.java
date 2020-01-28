@@ -41,6 +41,5 @@ public class CompleteOrderController extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
         resp.sendRedirect(req.getContextPath() + "/");
-//        req.getRequestDispatcher("/WEB-INF/views/order.jsp").forward(req, resp);
     }
 }

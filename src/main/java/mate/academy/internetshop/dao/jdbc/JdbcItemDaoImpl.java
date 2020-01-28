@@ -39,7 +39,8 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
                 item.setId(itemId);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create new item with id  = " + item.getId(), e);
+            throw new DataProcessingException("Can`t create new item with id = "
+                    + item.getId(), e);
         }
         return item;
     }

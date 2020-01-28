@@ -2,6 +2,7 @@ package mate.academy.internetshop.web.filters;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -52,7 +53,7 @@ public class AuthenticationFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (NoSuchElementException e) {
             LOGGER.error("There is no session with this user" + e);
-            resp.sendRedirect( "/logout");
+            resp.sendRedirect("/logout");
         } catch (DataProcessingException e) {
             LOGGER.error(e);
             req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);

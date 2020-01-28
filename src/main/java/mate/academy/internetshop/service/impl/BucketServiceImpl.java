@@ -73,7 +73,6 @@ public class BucketServiceImpl implements BucketService {
         return create(new Bucket(user));
     }
 
-
     @Override
     public void addItem(Bucket bucket, Item item) throws DataProcessingException {
         bucket.addItemToBucket(item);

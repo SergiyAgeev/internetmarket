@@ -50,7 +50,6 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         return order;
     }
 
-
     @Override
     public Optional<Order> get(Long id) throws DataProcessingException {
         String query = "SELECT * FROM orders WHERE order_id = ?;";

@@ -95,6 +95,7 @@ public class AuthorisationFilter implements Filter {
                 .stream()
                 .anyMatch(role -> role.getRoleName().equals(roleName));
     }
+
     private void processAuthorized(HttpServletRequest req, HttpServletResponse resp,
                                    FilterChain chain)
             throws IOException, ServletException {

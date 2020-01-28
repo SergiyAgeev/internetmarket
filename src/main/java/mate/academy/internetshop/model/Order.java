@@ -13,6 +13,7 @@ public class Order {
         items = new ArrayList<>();
         this.userId = userId;
     }
+
     public Order(User user) {
         items = new ArrayList<>();
         userId = user.getId();

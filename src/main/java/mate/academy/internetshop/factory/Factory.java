@@ -10,9 +10,9 @@ import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.UserDao;
 
 import mate.academy.internetshop.dao.jdbc.JdbcBucketDaoImpl;
+import mate.academy.internetshop.dao.jdbc.JdbcItemDaoImpl;
 import mate.academy.internetshop.dao.jdbc.JdbcOrderDaoImpl;
 import mate.academy.internetshop.dao.jdbc.JdbcUserDaoImpl;
-import mate.academy.internetshop.dao.jdbc.JdbcItemDaoImpl;
 
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;

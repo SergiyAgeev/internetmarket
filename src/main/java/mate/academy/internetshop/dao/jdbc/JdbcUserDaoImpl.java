@@ -29,8 +29,8 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
     public User create(User user) throws DataProcessingException {
         User newUser;
         Long id = 0L;
-        String query = "INSERT INTO users " +
-                "(user_name, user_second_name , user_login,"
+        String query = "INSERT INTO users "
+                + "(user_name, user_second_name , user_login,"
                 + " user_password, user_token, user_age)"
                 + " VALUES (?, ?, ?, ?, ?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(query,
