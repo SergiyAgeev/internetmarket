@@ -1,6 +1,7 @@
 package mate.academy.internetshop.controller.indexcontroller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,11 @@ import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
+import org.apache.log4j.Logger;
 
 public class InjectDataController extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(InjectDataController.class);
+
     @Inject
     private static UserService userService;
 
@@ -28,7 +32,9 @@ public class InjectDataController extends HttpServlet {
         try {
             userService.create(user);
         } catch (DataProcessingException e) {
-            e.printStackTrace();
+            LOGGER.error("Error", e);
+            req.setAttribute("err_msg", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
 
         User admin = new User();
@@ -40,7 +46,9 @@ public class InjectDataController extends HttpServlet {
         try {
             userService.create(admin);
         } catch (DataProcessingException e) {
-            e.printStackTrace();
+            LOGGER.error("Error", e);
+            req.setAttribute("err_msg", e.getMessage());
+            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
         resp.sendRedirect("/index");
     }

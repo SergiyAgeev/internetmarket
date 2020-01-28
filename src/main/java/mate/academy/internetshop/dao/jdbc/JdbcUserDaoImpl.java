@@ -27,8 +27,7 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User create(User user) throws DataProcessingException {
-        User newUser;
-        Long id = 0L;
+
         String query = "INSERT INTO users "
                 + "(user_name, user_second_name , user_login,"
                 + " user_password, user_token, user_age)"
@@ -43,6 +42,8 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
             statement.setInt(6, user.getAge());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
+            User newUser;
+            Long id = 0L;
             while (rs.next()) {
                 id = rs.getLong(1);
                 user.setId(id);
@@ -51,11 +52,10 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
                 Optional<Long> roleId = getRoleIdByRoleName(String.valueOf(role.getRoleName()));
                 addRoleToUserByUserId(id, roleId.get());
             }
-            newUser = new User(id, user);
+            return newUser = new User(id, user);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create new user with id = " + user.getId(), e);
         }
-        return newUser;
     }
 
     @Override
@@ -144,32 +144,26 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
     @Override
     public Optional<User> findByLogin(String login) throws DataProcessingException {
         String query = "SELECT user_id FROM users WHERE user_login=?;";
-        Optional<User> user = Optional.empty();
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, login);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                long userId = rs.getLong("user_id");
-                user = get(userId);
-            }
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't find user with login = " + login, e);
-        }
-        return user;
+        return getUserByParam(login, query);
     }
 
     @Override
     public Optional<User> getByToken(String token) throws DataProcessingException {
         String query = "SELECT user_id FROM users WHERE user_token=?;";
+        return getUserByParam(token, query);
+    }
+
+    private Optional<User> getUserByParam(String value, String query)
+            throws DataProcessingException {
         Optional<User> user = Optional.empty();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, token);
+            statement.setString(1, value);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 user = get(rs.getLong("user_id"));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't find user with token = " + token, e);
+            throw new DataProcessingException("Can't find user with param = " + value, e);
         }
         return user;
     }
@@ -193,7 +187,6 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
             throw new DataProcessingException("Can't find users roles", e);
 
         }
-
         return roles;
     }
 
