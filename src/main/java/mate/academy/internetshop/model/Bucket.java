@@ -2,22 +2,26 @@ package mate.academy.internetshop.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import mate.academy.internetshop.lib.IdGenerator;
+import java.util.Objects;
 
 public class Bucket {
     private Long id;
     private Long userId;
     private List<Item> items;
 
-    public Bucket() {
-        id = IdGenerator.generateNewBucketId();
-    }
-
     public Bucket(Long userId) {
-        this();
         items = new ArrayList<>();
         this.userId = userId;
+    }
+
+    public Bucket(User user) {
+        items = new ArrayList<>();
+        userId = user.getId();
+    }
+
+    public Bucket(List<Item> items, Long userId) {
+        this.userId = userId;
+        this.items = items;
     }
 
     public Long getId() {
@@ -36,14 +40,44 @@ public class Bucket {
         return userId;
     }
 
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     public Bucket setUserId(Long userId) {
         this.userId = userId;
         return this;
     }
 
-    public Bucket setItems(List<Item> items) {
-        this.items = items;
-        return this;
+    public void addItemToBucket(Item item) {
+        if (items.contains(item)) {
+            return;
+        }
+        items.add(item);
+    }
+
+    public void addItemsToBucket(List<Item> items) {
+        this.items.removeAll(items);
+        this.items.addAll(items);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Bucket bucket = (Bucket) o;
+        return id.equals(bucket.id)
+                && userId.equals(bucket.userId)
+                && items.equals(bucket.items);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, items);
     }
 
     @Override
