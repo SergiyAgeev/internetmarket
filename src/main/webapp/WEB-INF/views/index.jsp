@@ -42,7 +42,7 @@
             <li>Register</li>
         </a>
         <br>
-        <a href="/admin/adminpage"/>
+        <a href="/admin/adminpage">
         <li>Admin</li>
         </a>
         <br>

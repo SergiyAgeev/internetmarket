@@ -1,85 +1,179 @@
 package mate.academy.internetshop.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.UserDao;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
-import org.apache.log4j.Logger;
 
 @Dao
 public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
-    private static Logger LOGGER = Logger.getLogger(JdbcOrderDaoImpl.class);
     @Inject
     private static ItemDao itemDao;
     @Inject
     private static UserDao userDao;
+
     public JdbcOrderDaoImpl(Connection connection) {
         super(connection);
     }
 
     @Override
-    public Order create(Order order) {
-        Statement stmt = null;
-        String query = "INSERT INTO 'orders' ('user_id') VALUES ('" + order.getUserId() + "');";
-        Long orderId = null; //call one the methods from statement
-        String insertOrderItemQuery = "INSERT INTO 'orders_items' ('order_id','item_id') " +
-                "VALUES ('%s', ' + '%s')";
-        for (Item item : order.getItems()) {
-            try {
-                stmt.execute(String.format(insertOrderItemQuery, orderId, item.getId()));
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public Order create(Order order) throws DataProcessingException {
+        String query = "INSERT INTO orders (user_id) VALUES (?);";
+        try (PreparedStatement statement = connection.prepareStatement(query,
+                Statement.RETURN_GENERATED_KEYS)) {
+            statement.setLong(1, order.getUserId());
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            while (rs.next()) {
+                Long orderId = rs.getLong(1);
+                order.setId(orderId);
             }
+            addItems(order, order.getItems());
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t create order with id = " + order.getId(), e);
         }
-        return new Order(orderId, order.getUserId(), order.getItems());
+
+        return order;
     }
 
     @Override
-    public Order get(Long id) {
-        return null;
+    public Optional<Order> get(Long id) throws DataProcessingException {
+        String query = "SELECT * FROM orders WHERE order_id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Long orderId = rs.getLong("order_id");
+                Long userId = rs.getLong("user_id");
+                Order order = new Order(userId);
+                order.setId(orderId);
+                order.setItems(getItems(order));
+                return Optional.of(order);
+            }
+        } catch (SQLException | DataProcessingException e) {
+            throw new DataProcessingException("Can`t find order with id = " + id, e);
+        }
+        return Optional.empty();
     }
 
     @Override
-    public Order update(Order order) {
-        return null;
+    public Order update(Order order) throws DataProcessingException {
+        String query = "UPDATE orders SET user_id = ? WHERE order_id= ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, order.getUserId());
+            statement.setLong(2, order.getId());
+            statement.executeUpdate();
+
+            List<Item> items = getItems(order);
+            List<Item> newItems = order.getItems();
+            List<Item> preparedForDelete = new ArrayList<>(items);
+
+            preparedForDelete.removeAll(newItems);
+            deleteItems(order, preparedForDelete);
+            List<Item> itemsToAdd = new ArrayList<>(newItems);
+            itemsToAdd.removeAll(items);
+            addItems(order, itemsToAdd);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t update order with id = " + order.getId(), e);
+        }
+        return order;
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        return false;
+    public boolean deleteById(Long id) throws DataProcessingException {
+        Order order = get(id).orElseThrow(NoSuchElementException::new);
+        return delete(order);
     }
 
     @Override
-    public boolean delete(Order order) {
-        return false;
+    public boolean delete(Order order) throws DataProcessingException {
+        String query = String.format(
+                "delete from %s where order_id =?", "orders");
+        deleteItems(order, order.getItems());
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, order.getId());
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't delete order with id = " + order.getId(), e);
+        }
     }
 
     @Override
-    public List<Order> getAll() {
-        return null;
+    public List<Order> getAll() throws DataProcessingException {
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT * FROM orders;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Long bucketId = rs.getLong("order_id");
+                Long userId = rs.getLong("user_id");
+                Order order = new Order(userId);
+                order.setId(bucketId);
+                order.setItems(getItems(order));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get all Orders", e);
+        }
+        return orders;
     }
 
-    @Override
-    public List<Order> getUserOrders(Long userId) {
-        String getOrdersQuery = "SELECT orders.order_id, orders.user_id, items.name, items.price"
-                + "FROM orders" +
-                "INNER JOIN orders_items" +
-                "ON orders.order_id = orders_items.order_id" +
-                "INNER JOIN items" +
-                "ON orders_items.item_id = items.item_id" +
-                "WHERE orders.user_id = 1" +
-                "ORDER BY orders.order_id;";
-        String getUserQuery = "SELECT * FROM users WHERE users.user_id = <SOME_VALUE>";
-        //сформувати список ордерів і повернути його
-        return null;
+    private void addItems(Order order, List<Item> items) throws DataProcessingException {
+        String query = "INSERT INTO orders_items (orders_id, item_id) VALUES (?, ?);";
+        addToOrder(order, items, query);
+    }
+
+    private void deleteItems(Order order, List<Item> items) throws DataProcessingException {
+        String query = "DELETE FROM orders_items WHERE orders_id = ? AND item_id = ?;";
+        addToOrder(order, items, query);
+    }
+
+    private void addToOrder(Order order, List<Item> items, String query)
+            throws DataProcessingException {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (Item item : items) {
+                statement.setLong(1, order.getId());
+                statement.setLong(2, item.getId());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't add item to order = " + order.toString(), e);
+        }
+    }
+
+    private List<Item> getItems(Order order) throws DataProcessingException {
+        List<Item> items = new ArrayList<>();
+        String query = "SELECT i.item_id, item_name, item_price FROM items i JOIN orders_items oi"
+                + " ON i.item_id = oi.item_id AND orders_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, order.getId());
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Long itemId = rs.getLong("i.item_id");
+                String itemName = rs.getString("item_name");
+                Double itemPrice = rs.getDouble("item_price");
+                Item item = new Item(itemName, itemPrice);
+                item.setId(itemId);
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get items from order: " + e);
+        }
+        return items;
     }
 }

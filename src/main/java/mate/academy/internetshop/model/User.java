@@ -1,9 +1,8 @@
 package mate.academy.internetshop.model;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-
-import mate.academy.internetshop.lib.IdGenerator;
 
 public class User {
     private Long id;
@@ -24,6 +23,16 @@ public class User {
         this.login = login;
         this.password = password;
         this.age = age;
+    }
+
+    public User(long userId, User user) {
+        this.id = userId;
+        name = user.name;
+        secondName = user.secondName;
+        login = user.login;
+        password = user.password;
+        token = user.token;
+        roles = user.roles;
     }
 
     public String getSecondName() {
@@ -101,12 +110,35 @@ public class User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return age == user.age
+                && id.equals(user.id)
+                && Objects.equals(name, user.name)
+                && Objects.equals(secondName, user.secondName)
+                && login.equals(user.login)
+                && password.equals(user.password)
+                && Objects.equals(token, user.token)
+                && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, secondName, age, login, password, token, roles);
+    }
+
+    @Override
     public String toString() {
         return "User{" + "id=" + id
                 + ", name='" + name + '\''
                 + ", secondName='" + secondName + '\''
                 + ", login='" + login + '\''
-                + ", password='" + password + '\''
                 + ", age=" + age + '}';
     }
 }

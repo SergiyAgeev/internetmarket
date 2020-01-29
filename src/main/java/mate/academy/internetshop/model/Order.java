@@ -20,12 +20,6 @@ public class Order {
         this.userId = userId;
     }
 
-    public Order(Long id, Long userId, List<Item> items) {
-        this.id = id;
-        this.userId = userId;
-        this.items = items;
-    }
-
     public Long getId() {
         return id;
     }

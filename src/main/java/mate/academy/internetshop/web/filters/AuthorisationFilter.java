@@ -6,23 +6,25 @@ import static mate.academy.internetshop.model.Role.RoleName.USER;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
+import org.apache.log4j.Logger;
 
 public class AuthorisationFilter implements Filter {
+    private static Logger LOGGER = Logger.getLogger(AuthorisationFilter.class);
+
     @Inject
     private static UserService userService;
 
@@ -33,7 +35,7 @@ public class AuthorisationFilter implements Filter {
         protectedUrls.put("/admin/showallusers", ADMIN);
         protectedUrls.put("/admin/addnewitem", ADMIN);
         protectedUrls.put("/admin/deleteItem", ADMIN);
-        protectedUrls.put("/admin/deelteUser", ADMIN);
+        protectedUrls.put("/admin/deleteUser", ADMIN);
         protectedUrls.put("/admin/allItems", ADMIN);
         protectedUrls.put("/admin/adminpage", ADMIN);
 
@@ -49,43 +51,32 @@ public class AuthorisationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
-        Cookie[] cookies = req.getCookies();
-        if (cookies == null) {
-            processUnAuthenticated(req, resp);
-            return;
-        }
-
-        String requestedUrl = req.getServletPath();
+        String requestedUrl = req.getRequestURI();
         Role.RoleName roleName = protectedUrls.get(requestedUrl);
+
         if (roleName == null) {
-            processAuthenticated(chain, req, resp);
+            processAuthorized(req, resp, chain);
             return;
         }
 
-        String token = null;
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("MATE")) {
-                token = cookie.getValue();
-                break;
-            }
+        Long userId = (Long) req.getSession().getAttribute("userId");
+        User user = null;
+
+        try {
+            user = userService.get(userId);
+        } catch (DataProcessingException e) {
+            LOGGER.error("err_msg",e);
+            req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
 
-        if (token == null) {
-            processUnAuthenticated(req, resp);
+        if (verifyRole(user, roleName)) {
+            processAuthorized(req, resp, chain);
         } else {
-            Optional<User> user = userService.getByToken(token);
-            if (user.isPresent()) {
-                if (verifyRole(user.get(), roleName)) {
-                    processAuthenticated(chain, req, resp);
-                } else {
-                    processDenied(req, resp);
-                }
-            } else {
-                processUnAuthenticated(req, resp);
-            }
+            processDenied(req, resp);
         }
     }
 
@@ -100,8 +91,15 @@ public class AuthorisationFilter implements Filter {
     }
 
     private boolean verifyRole(User user, Role.RoleName roleName) {
-        return user.getRoles().stream()
+        return user.getRoles()
+                .stream()
                 .anyMatch(role -> role.getRoleName().equals(roleName));
+    }
+
+    private void processAuthorized(HttpServletRequest req, HttpServletResponse resp,
+                                   FilterChain chain)
+            throws IOException, ServletException {
+        chain.doFilter(req, resp);
     }
 
     private void processUnAuthenticated(HttpServletRequest req, HttpServletResponse resp)
