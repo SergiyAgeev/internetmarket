@@ -6,6 +6,7 @@ import static mate.academy.internetshop.model.Role.RoleName.USER;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -45,7 +46,7 @@ public class AuthorisationFilter implements Filter {
         protectedUrls.put("/user/orders", USER);
         protectedUrls.put("/user/completeOrder", USER);
         protectedUrls.put("/user/deleteFromBucket", USER);
-
+        protectedUrls.put("/user/getAllItemsInBucket", USER);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class AuthorisationFilter implements Filter {
         try {
             user = userService.get(userId);
         } catch (DataProcessingException e) {
-            LOGGER.error("err_msg",e);
+            LOGGER.error("err_msg", e);
             req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
 
@@ -98,17 +99,6 @@ public class AuthorisationFilter implements Filter {
 
     private void processAuthorized(HttpServletRequest req, HttpServletResponse resp,
                                    FilterChain chain)
-            throws IOException, ServletException {
-        chain.doFilter(req, resp);
-    }
-
-    private void processUnAuthenticated(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        resp.sendRedirect("/login");
-    }
-
-    private void processAuthenticated(
-            FilterChain chain, HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
         chain.doFilter(req, resp);
     }
