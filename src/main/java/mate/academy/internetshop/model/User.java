@@ -11,6 +11,7 @@ public class User {
     private int age;
     private String login;
     private String password;
+    private byte[] salt;
     private String token;
     private Set<Role> roles = new HashSet<>();
 
@@ -33,6 +34,14 @@ public class User {
         password = user.password;
         token = user.token;
         roles = user.roles;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     public String getSecondName() {

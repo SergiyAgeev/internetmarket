@@ -52,7 +52,7 @@ public class AuthenticationFilter implements Filter {
             userService.get(userId);
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (NoSuchElementException e) {
-            LOGGER.error("There is no session with this user" + e);
+            LOGGER.error("There is no session with this user = " + userId, e);
             resp.sendRedirect("/logout");
         } catch (DataProcessingException e) {
             LOGGER.error(e);
@@ -62,7 +62,7 @@ public class AuthenticationFilter implements Filter {
 
     private void processUnAuthenticated(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        resp.sendRedirect("/login");
+        resp.sendRedirect("/Login");
     }
 
     @Override
