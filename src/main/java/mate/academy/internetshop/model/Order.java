@@ -3,15 +3,12 @@ package mate.academy.internetshop.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import mate.academy.internetshop.lib.IdGenerator;
-
 public class Order {
     private Long id;
     private Long userId;
     private List<Item> items;
 
     public Order() {
-        id = IdGenerator.generateNewOrderId();
     }
 
     public Order(Long userId) {

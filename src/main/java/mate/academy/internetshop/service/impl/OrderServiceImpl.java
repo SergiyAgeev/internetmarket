@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order completeOrder(List<Item> items, User user) throws DataProcessingException {
-        Order order = new Order(user);
+        Order order = new Order(user.getId());
         List<Item> orderItems = new ArrayList<>(items);
         order.setItems(orderItems);
         return create(order);
