@@ -62,23 +62,53 @@ Configure **Tomcat** local server:
 > add artifact;
 >
 > add sdk 11;
->
 
+<hr>
+Create a schema in any SQL database.
 
-Create a schema "internet_market" in any SQL database.
+Execute query from file **init_db.sql** to create all the tables required by this app.
 
-Use file interntetshop.src.main.java.resources.init_db.sql to create all the tables required by this app.
+    src                 
+     └── main            
+         └── resourses        
+                └── init_db.sql 
+     
+<hr>
 
-At interntetshop.src.main.java.Factory class use username and password for your DB to create a Connection.
+In **Factory** class input your **DB url**, **username** and **password** from your DB to create a connection.
 
-At interntetshop.src.main.java.resources.hibernate.cfg.xml configure Hibernate with correct username and password.
+    src                 
+     └── main            
+        └── java        
+            └── mate
+                └── academy
+                    └── internetshop
+                          └────factory
+                                └── Factory.java
+     
+Change a path in **log4j.properties**. It has to reach your logFile.
 
-Change a path in interntetshop.src.main.java.resources.log4j.properties. It has to reach your logFile.
+    src                 
+     └── main            
+         └── resourses        
+                └── log4j.properties 
 
 Run the project.
 
-By default there’s one user with a USER role (login = 1, password = 1) and one – with an ADMIN role (login = 2, password = 2). 
+input **/inject** in address bar in your browser to create 2 users :
+
+###### role = ADMIN
+>login = admin
+>
+>password = admin
+>
+
+###### role = USER
+>login = user
+>
+>password = user
+
 <hr>
 
 # <a name="authors"></a>Author
-- [SergiyAgeev](https://github.com/SergiyAgeev)
+ [SergiyAgeev](https://github.com/SergiyAgeev)

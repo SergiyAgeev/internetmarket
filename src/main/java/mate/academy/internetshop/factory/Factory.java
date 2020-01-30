@@ -44,8 +44,9 @@ public class Factory {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/internet_market?"
-                            + "user=root&password=MyNewPass5!"
+                    "INPUT_YOUR_DB_ULR_HERE"
+                            + "user= YOUR_USERNAME"
+                            + "&password= YOUR_PASSWORD"
             );
         } catch (ClassNotFoundException | SQLException e) {
             LOGGER.warn("Can't establish connection to our DB" + e);

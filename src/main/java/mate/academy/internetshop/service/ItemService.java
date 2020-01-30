@@ -1,6 +1,5 @@
 package mate.academy.internetshop.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import mate.academy.internetshop.exceptions.DataProcessingException;
