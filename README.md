@@ -10,8 +10,6 @@
 
 [Project structure](#structure)
 
-[For user, how to start?](#user-start)
-
 [For developer](#developer-start)
 
 [Author](#author)
