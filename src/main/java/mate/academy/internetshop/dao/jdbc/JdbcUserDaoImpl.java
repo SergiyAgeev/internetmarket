@@ -30,16 +30,17 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
 
         String query = "INSERT INTO users "
                 + "(user_name, user_second_name , user_login,"
-                + " user_password, user_token, user_age)"
-                + " VALUES (?, ?, ?, ?, ?, ?);";
+                + " user_password,user_salt, user_token, user_age)"
+                + " VALUES (?, ?, ?, ?, ?, ?,?);";
         try (PreparedStatement statement = connection.prepareStatement(query,
                 PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getSecondName());
             statement.setString(3, user.getLogin());
             statement.setString(4, user.getPassword());
-            statement.setString(5, user.getToken());
-            statement.setInt(6, user.getAge());
+            statement.setBytes(5, user.getSalt());
+            statement.setString(6, user.getToken());
+            statement.setInt(7, user.getAge());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
             User newUser;
@@ -71,9 +72,11 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
                 String surname = rs.getString("user_second_name");
                 String login = rs.getString("user_login");
                 String password = rs.getString("user_password");
-                String token = rs.getString("user_token");
                 int age = rs.getInt("user_age");
                 user = new User(name, surname, login, password, age);
+                byte[] salt = rs.getBytes("user_salt");
+                String token = rs.getString("user_token");
+                user.setSalt(salt);
                 user.setId(userId);
                 user.setToken(token);
                 Set<Role> roles = getAllUsersRoles(id);
@@ -96,7 +99,7 @@ public class JdbcUserDaoImpl extends AbstractDao<User> implements UserDao {
             statement.setString(2, user.getSecondName());
             statement.setString(3, user.getLogin());
             statement.setString(4, user.getPassword());
-            statement.setInt(4, user.getAge());
+            statement.setInt(5, user.getAge());
             statement.setLong(6, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
