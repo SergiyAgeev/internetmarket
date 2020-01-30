@@ -1,4 +1,6 @@
-#internet-market 
+
+# internet-market
+
 ![](https://lh5.googleusercontent.com/proxy/rkFKDCl1EJAR68_E1BuutdMKWpp6FbEkKQ4hsjQRd11S2a7hu7dsABzren1lEAwbkcAnbAn67C1T87oNMm6_8JKAijfSq6FBrCv16jV1vKX9v8vxNuLFSU-maIXll6_i4ao3ZqNDiWjYW8f4)
 
 ![](https://img.shields.io/github/languages/top/SergiyAgeev/internetmarket)
@@ -7,8 +9,6 @@
 [Project purpose](#purpose)
 
 [Project structure](#structure)
-
-[For user, how to start?](#user-start)
 
 [For developer](#developer-start)
 
