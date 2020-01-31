@@ -16,7 +16,7 @@
 
 
 # <a name="purpose"></a>Project purpose
->This project is a prototype of an online market. 
+This project is a prototype of an online market. 
 Where its main functionality is realized.
 <hr>
 
