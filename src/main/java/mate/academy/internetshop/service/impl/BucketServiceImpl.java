@@ -2,7 +2,6 @@ package mate.academy.internetshop.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.exceptions.DataProcessingException;
@@ -31,8 +30,8 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public List<Bucket> getAllBuckets() throws DataProcessingException {
-        return bucketDao.getAllBuckets();
+    public List<Bucket> getAll() throws DataProcessingException {
+        return bucketDao.getAll();
     }
 
     @Override
@@ -51,26 +50,9 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public List<Item> getAllItems(Bucket bucket) throws DataProcessingException {
-        return bucket.getItems();
-    }
-
-    @Override
-    public Bucket getByUserId(Long userId) throws DataProcessingException {
-        return bucketDao.get(userId)
-                .orElseThrow(() -> new NoSuchElementException("Bucket doesn't exist"));
-    }
-
-    @Override
     public Bucket getByUser(User user) throws DataProcessingException {
-        Optional<Bucket> bucket = getAllBuckets()
-                .stream()
-                .filter(b -> b.getUserId().equals(user.getId()))
-                .findFirst();
-        if (bucket.isPresent()) {
-            return bucket.get();
-        }
-        return create(new Bucket(user));
+        return bucketDao.getByUser(user)
+                .orElseThrow(() -> new NoSuchElementException("Bucket doesn't exist"));
     }
 
     @Override

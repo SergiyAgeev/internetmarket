@@ -15,7 +15,7 @@ import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.Logger;
 
 public class AdminGetAllUsersController extends HttpServlet {
-    private static Logger LOGGER = Logger.getLogger(AdminGetAllUsersController.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminGetAllUsersController.class);
 
     @Inject
     private static UserService userService;
@@ -25,7 +25,7 @@ public class AdminGetAllUsersController extends HttpServlet {
             throws ServletException, IOException {
         List<User> users = null;
         try {
-            users = userService.getAllUsers();
+            users = userService.getAll();
         } catch (DataProcessingException e) {
             LOGGER.error("Error", e);
             req.setAttribute("err_msg", e.getMessage());

@@ -27,7 +27,7 @@ import mate.academy.internetshop.service.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
 public class Factory {
-    private static Logger LOGGER = Logger.getLogger(Factory.class);
+    private static final Logger LOGGER = Logger.getLogger(Factory.class);
     private static Connection connection;
 
     private static BucketDao bucketDaoInstance;

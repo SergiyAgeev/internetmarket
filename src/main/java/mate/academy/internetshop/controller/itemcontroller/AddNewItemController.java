@@ -13,7 +13,7 @@ import mate.academy.internetshop.service.ItemService;
 import org.apache.log4j.Logger;
 
 public class AddNewItemController extends HttpServlet {
-    private static Logger LOGGER = Logger.getLogger(AddNewItemController.class);
+    private static final Logger LOGGER = Logger.getLogger(AddNewItemController.class);
 
     @Inject
     private static ItemService itemService;
@@ -21,7 +21,7 @@ public class AddNewItemController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/addnewitem.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/addNewItem.jsp").forward(req, resp);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class AddNewItemController extends HttpServlet {
             req.setAttribute("err_msg",e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
-        resp.sendRedirect("/admin/allItems");
+        resp.sendRedirect("/admin/allitems");
     }
 }

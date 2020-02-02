@@ -12,7 +12,6 @@ public class Order {
     }
 
     public Order(Long userId) {
-        this();
         items = new ArrayList<>();
         this.userId = userId;
     }

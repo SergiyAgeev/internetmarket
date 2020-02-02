@@ -19,7 +19,7 @@
         </a>
     </div>
     <br>
-    <a href="AddOrderFromBucket">
+    <a href="addorderfrombucket">
         <button>completeOrder</button>
     </a>
     <br>
@@ -44,7 +44,7 @@
                 <c:out value="${itemInBucket.price}"/>
             </td>
             <td>
-                <a href="deleteItemFromBucket?item_id=${itemInBucket.id}">
+                <a href="deleteitemfrombucket?item_id=${itemInBucket.id}">
                     <button>Delete from bucket</button>
                 </a>
             </td>

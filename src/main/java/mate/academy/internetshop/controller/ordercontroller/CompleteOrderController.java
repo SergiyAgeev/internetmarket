@@ -17,7 +17,7 @@ import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.Logger;
 
 public class CompleteOrderController extends HttpServlet {
-    private static Logger LOGGER = Logger.getLogger(CompleteOrderController.class);
+    private static final Logger LOGGER = Logger.getLogger(CompleteOrderController.class);
 
     @Inject
     private static BucketService bucketService;
@@ -40,6 +40,6 @@ public class CompleteOrderController extends HttpServlet {
             req.setAttribute("err_msg", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/dbError.jsp").forward(req, resp);
         }
-        resp.sendRedirect(req.getContextPath() + "/");
+        resp.sendRedirect("/");
     }
 }

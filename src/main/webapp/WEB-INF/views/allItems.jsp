@@ -42,7 +42,7 @@
                     <c:out value="${item.price}"/>
                 </td>
                 <td>
-                    <a href="addItemToBucket?item_id=${item.id}">
+                    <a href="additemtobucket?item_id=${item.id}">
                         <button>Add to bucket</button>
                     </a>
                 </td>

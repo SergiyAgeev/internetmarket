@@ -24,15 +24,15 @@
 <div class="topmenu">
     <ul>
 
-        <a href="/user/allItems"/>
+        <a href="/user/allitems"/>
         <li>Items page</li>
         </a>
         <br>
-        <a href="/user/getAllItemsInBucket">
+        <a href="/user/getallitemsinbucket">
             <li>Bucket page</li>
         </a>
         <br>
-        <a href="/user/getOrderByUserId">
+        <a href="/user/getorderbyuserid">
             <li>Order page</li>
         </a>
         <br>
@@ -47,11 +47,11 @@
         </a>
         <br>
 
-        <a href="Login">
+        <a href="login">
             <li>Login</li>
         </a>
         <br>
-        <a href="Logout">
+        <a href="logout">
             <li>Logout</li>
         </a>
     </ul>

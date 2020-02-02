@@ -16,7 +16,7 @@ import mate.academy.internetshop.service.ItemService;
 import org.apache.log4j.Logger;
 
 public class AdminGetAllItemsController extends HttpServlet {
-    private static Logger LOGGER = Logger.getLogger(AdminGetAllUsersController.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminGetAllUsersController.class);
 
     @Inject
     private static ItemService itemService;
@@ -26,7 +26,7 @@ public class AdminGetAllItemsController extends HttpServlet {
             throws ServletException, IOException {
         List<Item> items = new ArrayList();
         try {
-            items.addAll(itemService.getAllItems());
+            items.addAll(itemService.getAll());
         } catch (DataProcessingException e) {
             LOGGER.error("Error", e);
             req.setAttribute("err_msg", e.getMessage());

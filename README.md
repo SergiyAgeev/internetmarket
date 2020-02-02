@@ -16,25 +16,30 @@
 
 
 # <a name="purpose"></a>Project purpose
->This project is a prototype of an online market. 
+This project is a prototype of an online market. 
 Where its main functionality is realized.
 <hr>
 
--   *Inject* - injection mock data.
-
--   *Registration* - registration of new users, password is hashed with **SHA-512** + *small amount of* **salt**.
-
--   *Login* - users authentication and authorization.
-
--   *Users* - displaying a list of all users application and able to remove some. Available for users with an **ADMIN** role only.
-
--   *Items* - displaying all items in stock. User with role **USER** can buy items. User with only role **ADMIN** can add new items and remove.
-
--   *Bucket* - displaying user’s bucket, user can add and remove items from his bucket. Available for users with a **USER** role only.
-
--   *Orders* - displaying user’s order history. If user is ready to buy items from bucket he is able to complete order. Available for users with a **USER** role only.
-
--   *Logout* - logging out from application.
+Available functions for **ALL** users: 
+ >- view menu of the store
+ >- view items of the store
+ >- registration
+ >- log in
+ >- log out
+ 
+ Available functions for users with a **USER** role only: 
+ >- add to user's bucket
+ >- delete from user's bucket
+ >- view all user's orders
+ >- complete order
+ >- view a lists of selected items in user`s bucket
+ 
+ Available functions for users with an **ADMIN** role only:
+ >- can visit admin menu page
+ >- add items to the store
+ >- delete items from the store
+ >- view a list of all users
+ >- delete users from the store
 <hr>
 
 # <a name="structure"></a>Project Structure
@@ -45,7 +50,6 @@ Where its main functionality is realized.
 - log4j 1.2.17
 - maven-checkstyle-plugin
 - mysql-connector-java 8.0.18
-- packing *war*
 <hr>
 
 # <a name="developer-start"></a>For developer
@@ -97,13 +101,13 @@ Run the project.
 
 input **/inject** in address bar in your browser to create 2 users :
 
-###### role = ADMIN
+##### role = ADMIN
 >login = admin
 >
 >password = admin
 >
 
-###### role = USER
+##### role = USER
 >login = user
 >
 >password = user

@@ -1,111 +1,93 @@
-create schema if not exists internet_market collate utf8_general_ci;
+CREATE SCHEMA `internet_market` DEFAULT CHARACTER SET utf8;
 
-create table if not exists items
+CREATE TABLE `internet_market`.`users`
 (
-    item_id    int auto_increment
-        primary key,
-    item_name  varchar(30)   not null,
-    item_price decimal(6, 2) not null
+    `user_id`          int            NOT NULL AUTO_INCREMENT,
+    `user_name`        varchar(255) DEFAULT NULL,
+    `user_second_name` varchar(255) DEFAULT NULL,
+    `user_age`         int          DEFAULT NULL,
+    `user_login`       varchar(255)   NOT NULL,
+    `user_password`    varchar(255)   NOT NULL,
+    `user_token`       varchar(255) DEFAULT NULL,
+    `user_salt`        varbinary(500) NOT NULL,
+    PRIMARY KEY (`user_id`),
+    UNIQUE KEY `user_login_UNIQUE` (`user_login`)
 );
 
-create table if not exists roles
+CREATE TABLE `internet_market`.`roles`
 (
-    role_id   int auto_increment
-        primary key,
-    role_name varchar(45) not null,
-    constraint role_name_UNIQUE
-        unique (role_name)
+    `role_id`   int         NOT NULL AUTO_INCREMENT,
+    `role_name` varchar(45) NOT NULL,
+    PRIMARY KEY (`role_id`),
+    UNIQUE KEY `role_name_UNIQUE` (`role_name`)
 );
 
-create table if not exists users
+CREATE TABLE `internet_market`.`users_roles`
 (
-    user_id          int auto_increment
-        primary key,
-    user_name        varchar(255)   null,
-    user_second_name varchar(255)   null,
-    user_age         int            null,
-    user_login       varchar(255)   not null,
-    user_password    varchar(255)   not null,
-    user_salt        varbinary(500) NOT NULL,
-    user_token       varchar(255)   null,
-    constraint user_login_UNIQUE
-        unique (user_login)
+    `id`       int NOT NULL AUTO_INCREMENT,
+    `users_id` int NOT NULL,
+    `role_id`  int NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `fk_users_roles_roles_idx` (`role_id`),
+    KEY `fk_users_roles_users_idx` (`users_id`),
+    CONSTRAINT `fk_users_roles_roles` FOREIGN KEY (`role_id`)
+        REFERENCES `roles` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `fk_users_roles_users` FOREIGN KEY (`users_id`)
+        REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create table if not exists bucket
+CREATE TABLE `internet_market`.`orders`
 (
-    id      int auto_increment
-        primary key,
-    user_id int not null,
-    constraint fk_bucket_user
-        foreign key (user_id) references users (user_id)
+    `order_id` int NOT NULL AUTO_INCREMENT,
+    `user_id`  int NOT NULL,
+    PRIMARY KEY (`order_id`),
+    KEY `fk_orders_1_idx` (`user_id`),
+    CONSTRAINT `fk_orders_users` FOREIGN KEY (`user_id`)
+        REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create index fk_bucket_user_idx
-    on bucket (user_id);
-
-create table if not exists bucket_items
+CREATE TABLE `internet_market`.`items`
 (
-    id        int auto_increment
-        primary key,
-    bucket_id int not null,
-    item_id   int not null,
-    constraint fk_bucket_items_bucket
-        foreign key (bucket_id) references bucket (id),
-    constraint fk_bucket_items_items
-        foreign key (item_id) references items (item_id)
+    `item_id`    int           NOT NULL AUTO_INCREMENT,
+    `item_name`  varchar(30)   NOT NULL,
+    `item_price` decimal(6, 2) NOT NULL,
+    PRIMARY KEY (`item_id`)
 );
 
-create index fk_bucket_items_bucket_idx
-    on bucket_items (bucket_id);
-
-create index fk_bucket_items_items_idx
-    on bucket_items (item_id);
-
-create table if not exists orders
+CREATE TABLE `internet_market3773`.`bucket`
 (
-    order_id int auto_increment
-        primary key,
-    user_id  int not null,
-    constraint fk_orders_users
-        foreign key (user_id) references users (user_id)
+    `id`      int NOT NULL AUTO_INCREMENT,
+    `user_id` int NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `fk_bucket_user_idx` (`user_id`),
+    CONSTRAINT `fk_bucket_user` FOREIGN KEY (`user_id`)
+        REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create index fk_orders_1_idx
-    on orders (user_id);
-
-create table if not exists orders_items
+CREATE TABLE `internet_market`.`bucket_items`
 (
-    idorders_items_id int auto_increment
-        primary key,
-    orders_id         int not null,
-    item_id           int not null,
-    constraint fk_orders_items_items
-        foreign key (orders_id) references orders (order_id),
-    constraint fk_orders_items_orders
-        foreign key (item_id) references items (item_id)
+    `id`        int NOT NULL AUTO_INCREMENT,
+    `bucket_id` int NOT NULL,
+    `item_id`   int NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `fk_bucket_items_bucket_idx` (`bucket_id`),
+    KEY `fk_bucket_items_items_idx` (`item_id`),
+    CONSTRAINT `fk_bucket_items_bucket` FOREIGN KEY (`bucket_id`)
+        REFERENCES `bucket` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `fk_bucket_items_items` FOREIGN KEY (`item_id`)
+        REFERENCES `items` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create index fk_orders_items_1_idx
-    on orders_items (item_id);
-
-create index fk_orders_items_2_idx
-    on orders_items (orders_id);
-
-create table if not exists users_roles
+CREATE TABLE `internet_market`.`orders_items`
 (
-    id       int auto_increment
-        primary key,
-    users_id int not null,
-    role_id  int not null,
-    constraint fk_users_roles_roles
-        foreign key (role_id) references roles (role_id),
-    constraint fk_users_roles_users
-        foreign key (users_id) references users (user_id)
+    `idorders_items_id` int NOT NULL AUTO_INCREMENT,
+    `orders_id`         int NOT NULL,
+    `item_id`           int NOT NULL,
+    PRIMARY KEY (`idorders_items_id`),
+    KEY `fk_orders_items_1_idx` (`item_id`),
+    KEY `fk_orders_items_2_idx` (`orders_id`),
+    CONSTRAINT `fk_orders_items_items` FOREIGN KEY (`orders_id`)
+        REFERENCES `orders` (`order_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `fk_orders_items_orders` FOREIGN KEY (`item_id`)
+        REFERENCES `items` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-create index fk_users_roles_roles_idx
-    on users_roles (role_id);
-
-create index fk_users_roles_users_idx
-    on users_roles (users_id);

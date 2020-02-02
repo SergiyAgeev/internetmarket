@@ -11,7 +11,7 @@
 </style>
 <body>
 
-<form action="Login" method="post">
+<form action="login" method="post">
     <h1>Login</h1>
     <hr>
     <label for="login"><b>Login: </b></label>

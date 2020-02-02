@@ -14,7 +14,7 @@ import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.Logger;
 
 public class GetOrderByUserIdController extends HttpServlet {
-    private static Logger LOGGER = Logger.getLogger(GetOrderByUserIdController.class);
+    private static final Logger LOGGER = Logger.getLogger(GetOrderByUserIdController.class);
 
     @Inject
     private static OrderService orderService;

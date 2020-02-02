@@ -57,7 +57,7 @@
             </td>
             <td>
 
-                <a href="/user/DeleteOrder?order_id=${order.id}">
+                <a href="/user/deleteorder?order_id=${order.id}">
                     <button>Delete</button>
                 </a>
             </td>

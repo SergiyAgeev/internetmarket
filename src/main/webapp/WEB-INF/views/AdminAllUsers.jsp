@@ -44,7 +44,7 @@
                 <c:out value="${user.age}"/>
             </td>
             <td>
-                <a href="deleteUser?user_id=${user.id}">
+                <a href="deleteuser?user_id=${user.id}">
                     <button>Delete</button>
                 </a>
             </td>
