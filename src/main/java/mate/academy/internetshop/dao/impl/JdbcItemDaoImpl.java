@@ -1,4 +1,4 @@
-package mate.academy.internetshop.dao.jdbc;
+package mate.academy.internetshop.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,12 +14,8 @@ import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Item;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 @Dao
 public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
-    private static final Logger LOGGER = LogManager.getLogger(JdbcItemDaoImpl.class);
 
     public JdbcItemDaoImpl(Connection connection) {
         super(connection);
@@ -34,7 +30,7 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
             statement.setDouble(2, item.getPrice());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
-            while (rs.next()) {
+            if (rs.next()) {
                 Long itemId = rs.getLong(1);
                 item.setId(itemId);
             }
@@ -51,7 +47,7 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 Long itemId = rs.getLong("item_id");
                 String name = rs.getString("item_name");
                 Double price = rs.getDouble("item_price");
@@ -97,7 +93,7 @@ public class JdbcItemDaoImpl extends AbstractDao<Item> implements ItemDao {
     }
 
     @Override
-    public List<Item> getAllItems() throws DataProcessingException {
+    public List<Item> getAll() throws DataProcessingException {
         String query = "SELECT * FROM items;";
         List<Item> items = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query);) {

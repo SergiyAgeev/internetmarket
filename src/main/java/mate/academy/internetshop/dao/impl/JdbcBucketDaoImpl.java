@@ -1,4 +1,4 @@
-package mate.academy.internetshop.dao.jdbc;
+package mate.academy.internetshop.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +15,7 @@ import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
+import mate.academy.internetshop.model.User;
 
 @Dao
 public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao {
@@ -31,7 +32,7 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
             statement.setLong(1, bucket.getUserId());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
-            while (rs.next()) {
+            if (rs.next()) {
                 Long bucketId = rs.getLong(1);
                 bucket.setId(bucketId);
             }
@@ -44,7 +45,7 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Optional<Bucket> get(Long id) throws DataProcessingException {
-        String query = "SELECT * FROM bucket WHERE id = ?;";
+        String query = "SELECT * FROM bucket WHERE user_id = ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
@@ -107,7 +108,7 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
     }
 
     @Override
-    public List<Bucket> getAllBuckets() throws DataProcessingException {
+    public List<Bucket> getAll() throws DataProcessingException {
         List<Bucket> buckets = new ArrayList<>();
         String query = "SELECT * FROM bucket;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -124,6 +125,11 @@ public class JdbcBucketDaoImpl extends AbstractDao<Bucket> implements BucketDao 
             throw new DataProcessingException("Can`t get all buckets" + e);
         }
         return buckets;
+    }
+
+    @Override
+    public Optional<Bucket> getByUser(User user) throws DataProcessingException {
+        return get(user.getId());
     }
 
     private void addItemsToBucket(Bucket bucket, List<Item> items) throws DataProcessingException {

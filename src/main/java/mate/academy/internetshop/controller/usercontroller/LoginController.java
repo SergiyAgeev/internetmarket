@@ -16,7 +16,7 @@ import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.Logger;
 
 public class LoginController extends HttpServlet {
-    private static Logger LOGGER = Logger.getLogger(LoginController.class);
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class);
     @Inject
     private static UserService userService;
 
@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet {
             User user = userService.login(login, password);
             HttpSession session = req.getSession(true);
             session.setAttribute("userId", user.getId());
-            resp.sendRedirect("/login");
+            resp.sendRedirect("/");
         } catch (AuthenticationException e) {
             req.setAttribute("errorMsg", "The incorrect login or password");
             req.getRequestDispatcher("WEB-INF/views/login.jsp").forward(req, resp);

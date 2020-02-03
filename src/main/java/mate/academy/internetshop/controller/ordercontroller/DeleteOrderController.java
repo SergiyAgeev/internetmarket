@@ -12,7 +12,7 @@ import mate.academy.internetshop.service.OrderService;
 import org.apache.log4j.Logger;
 
 public class DeleteOrderController extends HttpServlet {
-    private static Logger LOGGER = Logger.getLogger(DeleteOrderController.class);
+    private static final Logger LOGGER = Logger.getLogger(DeleteOrderController.class);
 
     @Inject
     private static OrderService orderService;

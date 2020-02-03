@@ -20,12 +20,12 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 public class AuthenticationFilter implements Filter {
-    private static Logger LOGGER = LogManager.getLogger(AuthenticationFilter.class);
+    private static final Logger LOGGER = LogManager.getLogger(AuthenticationFilter.class);
     @Inject
     private static UserService userService;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig){
 
     }
 
@@ -62,7 +62,7 @@ public class AuthenticationFilter implements Filter {
 
     private void processUnAuthenticated(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        resp.sendRedirect("/Login");
+        resp.sendRedirect("/login");
     }
 
     @Override

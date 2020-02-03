@@ -35,18 +35,17 @@ public class AuthorisationFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         protectedUrls.put("/admin/showallusers", ADMIN);
         protectedUrls.put("/admin/addnewitem", ADMIN);
-        protectedUrls.put("/admin/deleteItem", ADMIN);
-        protectedUrls.put("/admin/deleteUser", ADMIN);
-        protectedUrls.put("/admin/allItems", ADMIN);
+        protectedUrls.put("/admin/deleteitem", ADMIN);
+        protectedUrls.put("/admin/deleteuser", ADMIN);
+        protectedUrls.put("/admin/allitems", ADMIN);
         protectedUrls.put("/admin/adminpage", ADMIN);
 
-        protectedUrls.put("/user/addItemToBucket", USER);
-        protectedUrls.put("/user/deleteUserOrder", USER);
-        protectedUrls.put("/user/bucket", USER);
-        protectedUrls.put("/user/orders", USER);
-        protectedUrls.put("/user/completeOrder", USER);
-        protectedUrls.put("/user/deleteFromBucket", USER);
-        protectedUrls.put("/user/getAllItemsInBucket", USER);
+        protectedUrls.put("/user/additemtobucket", USER);
+        protectedUrls.put("/user/deleteuserorder", USER);
+        protectedUrls.put("/user/getorderbyuserid", USER);
+        protectedUrls.put("/user/completeorder", USER);
+        protectedUrls.put("/user/deletefrombucket", USER);
+        protectedUrls.put("/user/getallitemsinbucket", USER);
     }
 
     @Override

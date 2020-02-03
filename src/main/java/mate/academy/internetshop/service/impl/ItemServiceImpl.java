@@ -40,7 +40,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> getAllItems() throws DataProcessingException {
-        return itemDao.getAllItems();
+    public List<Item> getAll() throws DataProcessingException {
+        return itemDao.getAll();
     }
 }

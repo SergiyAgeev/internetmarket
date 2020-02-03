@@ -1,4 +1,4 @@
-package mate.academy.internetshop.dao.jdbc;
+package mate.academy.internetshop.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,21 +10,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
-import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
-import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
+import mate.academy.internetshop.model.User;
 
 @Dao
 public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
-    @Inject
-    private static ItemDao itemDao;
-    @Inject
-    private static UserDao userDao;
 
     public JdbcOrderDaoImpl(Connection connection) {
         super(connection);
@@ -38,7 +32,7 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
             statement.setLong(1, order.getUserId());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
-            while (rs.next()) {
+            if (rs.next()) {
                 Long orderId = rs.getLong(1);
                 order.setId(orderId);
             }
@@ -56,12 +50,12 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 Long orderId = rs.getLong("order_id");
                 Long userId = rs.getLong("user_id");
                 Order order = new Order(userId);
                 order.setId(orderId);
-                order.setItems(getItems(order));
+                order.setItems(getItemsFromOrder(order));
                 return Optional.of(order);
             }
         } catch (SQLException | DataProcessingException e) {
@@ -78,7 +72,7 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
             statement.setLong(2, order.getId());
             statement.executeUpdate();
 
-            List<Item> items = getItems(order);
+            List<Item> items = getItemsFromOrder(order);
             List<Item> newItems = order.getItems();
             List<Item> preparedForDelete = new ArrayList<>(items);
 
@@ -124,11 +118,25 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 Long userId = rs.getLong("user_id");
                 Order order = new Order(userId);
                 order.setId(bucketId);
-                order.setItems(getItems(order));
+                order.setItems(getItemsFromOrder(order));
                 orders.add(order);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all Orders", e);
+        }
+        return orders;
+    }
+
+    @Override
+    public List<Order> getUserOrders(User user) throws DataProcessingException {
+        List<Order> orders = new ArrayList<>();
+        String query = "SELECT * FROM orders WHERE user_id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, user.getId());
+            orders.addAll(getOrdersList(statement));
+        } catch (SQLException e) {
+            throw new DataProcessingException("Error, while trying to get"
+                    + " orders list for user with id = " + user.getId(), e);
         }
         return orders;
     }
@@ -156,7 +164,22 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
         }
     }
 
-    private List<Item> getItems(Order order) throws DataProcessingException {
+    private List<Order> getOrdersList(PreparedStatement statement)
+            throws SQLException, DataProcessingException {
+        List<Order> orders = new ArrayList<>();
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            Long bucketId = rs.getLong("order_id");
+            Long userId = rs.getLong("user_id");
+            Order order = new Order(userId);
+            order.setId(bucketId);
+            order.setItems(getItemsFromOrder(order));
+            orders.add(order);
+        }
+        return orders;
+    }
+
+    private List<Item> getItemsFromOrder(Order order) throws DataProcessingException {
         List<Item> items = new ArrayList<>();
         String query = "SELECT i.item_id, item_name, item_price FROM items i JOIN orders_items oi"
                 + " ON i.item_id = oi.item_id AND orders_id = ?";
@@ -172,7 +195,8 @@ public class JdbcOrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                 items.add(item);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get items from order: " + e);
+            throw new DataProcessingException("Can`t get items from order with id = "
+                    + order.getId(), e);
         }
         return items;
     }

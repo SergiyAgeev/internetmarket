@@ -25,7 +25,7 @@ public class GetAllItemsController extends HttpServlet {
             throws ServletException, IOException {
         List<Item> items = null;
         try {
-            items = itemService.getAllItems();
+            items = itemService.getAll();
         } catch (DataProcessingException e) {
             LOGGER.error("Error", e);
             req.setAttribute("err_msg", e.getMessage());

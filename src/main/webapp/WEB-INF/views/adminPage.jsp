@@ -29,7 +29,7 @@
 <div class="topmenu">
     <ul>
 
-        <a href="/admin/allItems"/>
+        <a href="/admin/allitems"/>
         <li>Items control</li>
         </a>
         <br>

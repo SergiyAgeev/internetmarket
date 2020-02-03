@@ -2,7 +2,6 @@ package mate.academy.internetshop.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.exceptions.DataProcessingException;
@@ -45,10 +44,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getUserOrders(User user) throws DataProcessingException {
-        return getAll()
-                .stream()
-                .filter(order -> order.getUserId().equals(user.getId()))
-                .collect(Collectors.toList());
+        return orderDao.getUserOrders(user);
     }
 
     @Override
@@ -58,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order completeOrder(List<Item> items, User user) throws DataProcessingException {
-        Order order = new Order(user);
+        Order order = new Order(user.getId());
         List<Item> orderItems = new ArrayList<>(items);
         order.setItems(orderItems);
         return create(order);

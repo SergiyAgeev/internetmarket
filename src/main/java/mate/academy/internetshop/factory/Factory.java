@@ -9,10 +9,10 @@ import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.UserDao;
 
-import mate.academy.internetshop.dao.jdbc.JdbcBucketDaoImpl;
-import mate.academy.internetshop.dao.jdbc.JdbcItemDaoImpl;
-import mate.academy.internetshop.dao.jdbc.JdbcOrderDaoImpl;
-import mate.academy.internetshop.dao.jdbc.JdbcUserDaoImpl;
+import mate.academy.internetshop.dao.impl.JdbcBucketDaoImpl;
+import mate.academy.internetshop.dao.impl.JdbcItemDaoImpl;
+import mate.academy.internetshop.dao.impl.JdbcOrderDaoImpl;
+import mate.academy.internetshop.dao.impl.JdbcUserDaoImpl;
 
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
@@ -27,7 +27,7 @@ import mate.academy.internetshop.service.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
 public class Factory {
-    private static Logger LOGGER = Logger.getLogger(Factory.class);
+    private static final Logger LOGGER = Logger.getLogger(Factory.class);
     private static Connection connection;
 
     private static BucketDao bucketDaoInstance;
@@ -44,8 +44,9 @@ public class Factory {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/internet_market?"
-                            + "user=root&password=MyNewPass5!"
+                    "INPUT_YOUR_DB_ULR_HERE"
+                            + "user= YOUR_USERNAME"
+                            + "&password= YOUR_PASSWORD"
             );
         } catch (ClassNotFoundException | SQLException e) {
             LOGGER.warn("Can't establish connection to our DB" + e);

@@ -43,7 +43,7 @@
                     <c:out value="${item.price}"/>
                 </td>
                 <td>
-                    <a href="deleteItem?item_id=${item.id}">
+                    <a href="deleteitem?item_id=${item.id}">
                         <button>Delete</button>
                     </a>
                 </td>
